@@ -1,0 +1,381 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>⼤学生生态环境科技创新大赛</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="__INDEX__/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="__INDEX__/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="__INDEX__/css/amazeui.min.css" />
+  <link rel="stylesheet" href="__INDEX__/css/admin.css">
+  <link rel="stylesheet" href="__INDEX__/css/app.css">
+  <link rel="stylesheet" href="__INDEX__/font-awesome.css" >
+  <link rel="stylesheet" href="__INDEX__/css/style.css">
+  <script src="__INDEX__/js/echarts.min.js"></script>
+
+
+
+
+
+  <script type="text/javascript"> 
+
+
+// 编写一个函数，供添加按钮调用，动态在表格的最后一行添加子节点；
+var num=1;
+function add(){
+  num++;
+  var tab=document.getElementById("list");
+  var t=document.createElement("tr");
+  var t1=document.createElement("td");
+  var x2=document.createElement("td");
+  var x3=document.createElement("td");
+  var x4=document.createElement("td");
+  var x5=document.createElement("td");
+  var x6=document.createElement("td");
+  var x7=document.createElement("td");
+  var x8=document.createElement("td");
+  var div=document.createElement("div");
+
+
+  // <th class="table-title am-hide-sm-only">姓名</th>
+  //                                           <th class="table-type am-hide-sm-only">性别</th>
+  //                                           <th class="table-author am-hide-sm-only">年龄</th>
+  //                                           <th class="table-date ">学校</th>
+  //                                           <th class="table-date am-hide-sm-only">年级专业</th>
+  //                                           <th class="table-date am-hide-sm-only">团队角色</th>
+  //                                           <th class="table-date am-hide-sm-only">联系方式</th>
+  //                                           <th class="table-set">操作</th>
+
+
+  x1.innerHTML=" 姓名"+num;                              
+  x2.innerHTML="性别"+num;
+  x3.innerHTML="年龄"+num;
+  x4.innerHTML="学校"+num;
+  x5.innerHTML="年级专业"+num;
+  x6.innerHTML="团队角色"+num;
+  x7.innerHTML="联系方式"+num;
+  x8.innerHTML="操作"+num;
+  div.innerHTML="查看、编辑、删除"+num;
+
+  tab.appendChild(tr);
+  tr.appendChild(x1);
+
+  tr.appendChild(x2);
+
+  tr.appendChild(x3);
+
+  tr.appendChild(x4);
+
+  tr.appendChild(x5);
+
+  tr.appendChild(x6);
+
+  tr.appendChild(x7);
+
+  tr.appendChild(x8);
+  x8.appendChild(div);
+
+
+
+}
+
+
+// 创建删除函数
+function del(obj)
+{
+
+  var tr=obj.parentNode.parentNode.parentNode.parentNode;
+  tr.parentNode.removeChild(tr);
+}
+
+
+
+</script> 
+
+
+
+
+
+</head>
+
+<body data-type="index">
+  <!--引用头部-->
+  {include file="public/top"} 
+  <!--/引用头部-->
+  <div class="tpl-page-container tpl-page-header-fixed">
+   <!--引用侧边栏-->
+   {include file="public/left"} 
+   <!--/引用侧边栏-->
+
+   <div class="tpl-content-wrapper">
+    
+    <ol class="am-breadcrumb">
+      <li><a href="#" class="am-icon-newspaper-o">项目管理</a></li>
+      
+      <li class="am-active">团队成员</li>
+     
+    </ol>
+    <div class="tpl-portlet-components">
+      <div class="portlet-title">
+        <div class="caption font-green bold">
+          团队成员
+        </div>
+         {if($bmdeadline['time'] < Time())}
+                                  <li  style="color: red;text-align: center;font-size: 30px;">修改时间已过！</li>{/if}
+
+        <div class="tpl-portlet-input tpl-fz-ml">
+                        <!--<div class="portlet-input input-small input-inline">
+                            <div class="input-icon right">
+                                <i class="am-icon-search"></i>
+                                <input type="text" class="form-control form-control-solid" placeholder="搜索..."> </div>
+                              </div>-->
+                            </div>
+
+
+                          </div>
+                          <div class="tpl-block">
+                            <div class="am-g">
+                              <div class="am-u-sm-12 am-u-md-6">
+                                <div class="am-btn-toolbar">
+                                  <div class="am-btn-group am-btn-group-xs ">
+                                    {if($bmdeadline['time'] > Time())}<a class="am-btn am-btn-default am-btn-success" href="{:url('memberadd',array('team_id'=>$member[0]['team_id']))}"><span class="am-icon-plus"></span> 新增</a>
+                                    {else}<a class="am-btn am-btn-default am-btn-success" href="" disabled><span class="am-icon-plus"></span> 新增</a>
+                                    {/if}
+                                    <!--<button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>-->
+                                  </div>
+                                </div>
+                              </div>
+                        <!--<div class="am-u-sm-12 am-u-md-3">
+                            <div class="am-form-group">
+                                <select data-am-selected="{btnSize: 'sm'}">
+              <option value="option1">所有类别</option>
+              <option value="option2">IT业界</option>
+              <option value="option3">数码产品</option>
+              <option value="option3">笔记本电脑</option>
+              <option value="option3">平板电脑</option>
+              <option value="option3">只能手机</option>
+              <option value="option3">超极本</option>
+            </select>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-12 am-u-md-3">
+                            <div class="am-input-group am-input-group-sm">
+                                <input type="text" class="am-form-field">
+                                <span class="am-input-group-btn">
+                                <button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button"></button>
+                                </span>
+                            </div>
+                          </div>-->
+                        </div> 
+                        <div class="am-g">
+                          <div class="am-u-sm-12">
+                              <table class="am-table am-table-striped am-table-hover table-main">
+                              <!--  {if($bmdeadline['time'] > Time())}
+                                  <h1 style="color: red;text-align: center">修改时间已过！</h1>-->
+                               
+                                <thead>
+                                  <tr>
+                                    
+                                    
+                                    <th class="table-title am-hide-sm-only">姓名</th>
+                                    <th class="table-type am-hide-sm-only">性别</th>
+                                    <th class="table-author am-hide-sm-only">年龄</th>
+                                    <th class="table-date ">学校</th>
+                                    <th class="table-date am-hide-sm-only">年级专业</th>
+                                    <th class="table-date am-hide-sm-only">团队角色</th>
+                                    <th class="table-date am-hide-sm-only">联系方式</th>
+                                    <th class="table-set">操作</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="list">
+                                {volist name="member" id="mem"}
+                                  <tr>
+                                    <td class="am-hide-sm-only">{$mem.name}</td>
+                                    <td class="am-hide-sm-only">{$mem.sex}</td>
+                                    <td class="am-hide-sm-only">{$mem.age}</td>
+                                    <td >{$mem.school}</td>
+                                    <td >{$mem.major}</td>
+                                    {if($mem.role == 0)}
+                                    <td class="am-hide-sm-only">队员</td>
+                                    {elseif($mem.role == 1)}
+                                    <td class="am-hide-sm-only">指导老师</td>
+                                    {elseif($mem.role == 2)}
+                                    <td class="am-hide-sm-only">队长</td>
+                                    {/if}
+                                    <td >{$mem.phone}</td>
+                                    <td>
+                                      <div class="am-btn-toolbar">
+                                        
+                                        <div class="am-btn-group am-btn-group-xs xa-btn-group">
+                                        {if($bmdeadline['time'] > Time())}
+                                          <!-- <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a> -->
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="{:url('memberedit',array('member_id'=>$mem.member_id))}"><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+
+                                          {if($mem.role != 1 && $mem.role != 2)}
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="warning('确实要删除吗', ' {:url('memberdel',array('member_id'=>$mem.member_id))}')"><span class="am-icon-trash-o"></span> 删除</a>
+
+                                          {else}
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="" disabled ><span class="am-icon-trash-o"></span> 删除</a>
+                                          {/if}
+                                          <!--  <a href='javascript:;' onclick='del(this)'  class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span>   删除 </a> -->
+                                        
+                                        {else}
+                                        
+                                            <!-- <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a> -->
+                                            <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="" disabled><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+
+                                            {if($mem.role != 1 && $mem.role != 2)}
+                                            <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick=""  disabled><span class="am-icon-trash-o"></span> 删除</a>
+
+                                            {else}
+                                            <a class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onClick="" disabled ><span class="am-icon-trash-o" disabled></span> 删除</a>{/if}
+                                            <!--  <a href='javascript:;' onclick='del(this)'  class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only"><span class="am-icon-trash-o"></span>   删除 </a> -->
+                                          {/if}
+                                          </div>
+                                        </div>
+                                        
+                                      </div>
+                                      
+                                    </td>
+                                  </tr>
+                                  {/volist}
+                                  <!-- <tr>
+                                    <td class="am-hide-sm-only">顾西园</td>
+                                    <td class="am-hide-sm-only">男</td>
+                                    <td class="am-hide-sm-only">37</td>
+                                    <td >浙江XX大学</td>
+                                    <td >——</td>
+                                    <td class="am-hide-sm-only">指导老师</td>
+                                    <td >183xxxx1234</td>
+                                    <td>
+                                      <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs xa-btn-group">
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a>
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-edit.html"><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+                                          <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onclick='del(this)'><span class="am-icon-trash-o"></span> 删除</button>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="am-hide-sm-only">沈巍</td>
+                                    <td class="am-hide-sm-only">男</td>
+                                    <td class="am-hide-sm-only">20</td>
+                                    <td >浙江XXX大学</td>
+                                    <td >16级图书管理</td>
+                                    <td class="am-hide-sm-only">队员</td>
+                                    <td >183xxxx1234</td>
+                                    <td>
+                                      <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs xa-btn-group">
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a>
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-edit.html"><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+                                          <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onclick='del(this)'><span class="am-icon-trash-o"></span> 删除</button>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="am-hide-sm-only">苏蔓</td>
+                                    <td class="am-hide-sm-only">女</td>
+                                    <td class="am-hide-sm-only">19</td>
+                                    <td >浙江XXX大学</td>
+                                    <td >17级英语</td>
+                                    <td class="am-hide-sm-only">队员</td>
+                                    <td >159xxxx1244</td>
+                                    <td>
+                                      <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs xa-btn-group">
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a>
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-edit.html"><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+                                          <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onclick='del(this)'><span class="am-icon-trash-o"></span> 删除</button>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="am-hide-sm-only">箫筱</td>
+                                    <td class="am-hide-sm-only">女</td>
+                                    <td class="am-hide-sm-only">19</td>
+                                    <td >浙江XXX大学</td>
+                                    <td >17级古文字研究</td>
+                                    <td class="am-hide-sm-only">队员</td>
+                                    <td >159xxxx1745</td>
+                                    <td>
+                                      <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs xa-btn-group">
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a>
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-edit.html"><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+                                          <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onclick='del(this)'><span class="am-icon-trash-o"></span> 删除</button>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="am-hide-sm-only">江晚</td>
+                                    <td class="am-hide-sm-only">男</td>
+                                    <td class="am-hide-sm-only">19</td>
+                                    <td >浙江XXX大学</td>
+                                    <td >17级古建筑保护</td>
+                                    <td class="am-hide-sm-only">队员</td>
+                                    <td >183xxxx1766</td>
+                                    <td>
+                                      <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs xa-btn-group">
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-check.html"><span class="am-icon-pencil-square-o"></span> 查看</a>
+                                          <a class="am-btn am-btn-default am-btn-xs am-text-secondary" href="../project/project-member-edit.html"><span class="am-icon-pencil-square-o" ></span> 编辑</a>
+                                          <button class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only" onclick='del(this)'><span class="am-icon-trash-o"></span> 删除</button>
+
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr> -->
+                                  
+                                  
+                                </tbody>
+                              </table>
+                              
+                              <hr>
+
+                            
+                          </div>
+
+                        </div>
+                        
+                      </div>
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                  </div>
+
+                </div>
+
+
+                <script src="__INDEX__/js/jquery.min.js"></script>
+                <script src="__INDEX__/js/amazeui.min.js"></script>
+                <script src="__INDEX__/js/app.js"></script>
+                <script src="__INDEX__/style/beyond.js"></script>
+              </body>
+
+              </html>

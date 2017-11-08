@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>⼤学生生态环境科技创新大赛</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="__INDEX__/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="__INDEX__/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="__INDEX__/css/amazeui.min.css" />
+  <link rel="stylesheet" href="__INDEX__/css/admin.css">
+  <link rel="stylesheet" href="__INDEX__/css/app.css">
+  <link rel="stylesheet" href="__INDEX__/font-awesome.css" >
+  <link rel="stylesheet" href="__INDEX__/css/style.css" >
+  <script src="__INDEX__/js/echarts.min.js"></script>
+</head>
+
+<body data-type="index">
+ <!--引用头部-->
+ {include file="public/top"} 
+ <!--/引用头部-->
+ <div class="tpl-page-container tpl-page-header-fixed">
+  <!--引用侧边栏-->
+  {include file="public/left"} 
+  <!--/引用侧边栏-->
+
+  <div class="tpl-content-wrapper">
+    <ol class="am-breadcrumb">
+      <li><a href="#" class="am-icon-pencil-square-o">项目管理</a></li>
+      <li class="am-active">项目信息</li>
+    </ol>
+    <div class="tpl-portlet-components">
+      <div class="portlet-title">
+        <div class="caption font-green bold">
+          项目信息
+        </div>
+        <div class="tpl-portlet-input tpl-fz-ml">
+          <div class="portlet-input input-small input-inline">
+            <div class="input-icon right">
+              <i class="am-icon-search"></i>
+              <input type="text" class="form-control form-control-solid" placeholder="搜索..."> </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="tpl-block ">
+
+          <div class="am-g tpl-amazeui-form">
+
+
+            <div class="am-u-sm-12 am-u-md-9">
+             <form class="am-form am-form-horizontal">
+               <div class="am-form-group">
+                <label for="team" class="am-u-sm-3 am-form-label">所在团队</label>
+
+                <div class="am-u-sm-9">
+
+                 <select  name="team" id="team" data-province="所在团队">
+                 </select>
+               </div>
+
+
+             </div>
+             <div class="am-form-group">
+              <label for="place" class="am-u-sm-3 am-form-label">所在学校</label>
+              <div data-toggle="distpicker" >
+                <div class="am-u-sm-9">
+
+                 <select  name="place_p" id="province" data-province="浙江省">
+                 </select>
+               </div>
+
+             </div>
+           </div>
+           <div class="am-form-group">
+            <label for="number" class="am-u-sm-3 am-form-label">学号</label>
+            <div class="am-u-sm-9">
+              <input type="text" id="number" placeholder="学号">
+              <!--                                        <small>输入你的名字，让我们记住你。</small>-->
+            </div>
+          </div>
+          <div class="am-form-group">
+            <label for="user-email" class="am-u-sm-3 am-form-label">邮箱 </label>
+            <div class="am-u-sm-9">
+              <input type="email" id="user-email" placeholder="邮箱">
+
+            </div>
+          </div>
+          <div class="am-form-group">
+            <label for="user-phone" class="am-u-sm-3 am-form-label">联系电话 </label>
+            <div class="am-u-sm-9">
+              <input type="tel" id="user-phone" placeholder="联系电话 ">
+            </div>
+          </div>
+
+          <div class="am-form-group">
+            <label for="photo" class="am-u-sm-3 am-form-label">一寸照</label>
+            <div class="am-u-sm-9">
+              <div class="kv-main">
+
+              <img  width="71px" height="99px" src="__INDEX__/img/noimg.jpg" alt="无照片">
+                <a class="btn btn-default" href="#">修改照片</a>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="am-form-group">
+            <label for="member" class="am-u-sm-3 am-form-label">成员角色</label>
+
+            <div class="am-u-sm-9">
+
+             <select  name="member" id="member" >
+               <option selected="selected" value="0">--成员角色选择--</option>
+               <option  value="队长">队长</option>
+               <option  value="成员">成员</option>
+
+             </select>
+           </div>
+
+
+         </div>
+
+
+
+
+
+
+       </form>
+     </div>
+   </div>
+ </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</div>
+
+<script  src="__INDEX__/js/distpicker.data.js"></script> 
+<script  src="__INDEX__/js/distpicker.js"></script> 
+<script src="__INDEX__/js/jquery.min.js"></script>
+<script src="__INDEX__/js/amazeui.min.js"></script>
+<script src="__INDEX__/js/app.js"></script>
+</body>
+
+</html>
