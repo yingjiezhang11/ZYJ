@@ -130,7 +130,7 @@ return [
         'taglib_end'   => '}',
     ],
 
-    // 视图输出字符串内容替换
+    // 视图输出字符串内容替换123123
     'view_replace_str'       => [
         '__INDEX__'=>'http://127.0.0.1/bick/public/static/index',
     	'__ADMIN__' => 'http://127.0.0.1/bick/public/static/admin'
