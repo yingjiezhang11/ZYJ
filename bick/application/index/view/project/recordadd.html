@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>⼤学生生态环境科技创新大赛</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="__INDEX__/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="__INDEX__/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="__INDEX__/css/bootstrap.css" />
+  <link rel="stylesheet" href="__INDEX__/css/amazeui.min.css" />
+  <link rel="stylesheet" href="__INDEX__/fileinput.min.css"  />
+  <link rel="stylesheet" href="__INDEX__/css/admin.css">
+  <link rel="stylesheet" href="__INDEX__/css/app.css">
+  <link rel="stylesheet" href="__INDEX__/font-awesome.css" >
+  <link rel="stylesheet" href="__INDEX__/css/style.css" >
+
+  <script src="__INDEX__/js/echarts.min.js"></script>
+  <style>
+    input{border:1px solid #333333;color:#666666;background:#eeeeee;font:normal 12px Tahoma;width: 72%;}
+  </style>
+  <script>
+    function fclick(obj){
+      with(obj){
+        style.posTop=event.srcElement.offsetTop
+        var x=event.x-offsetWidth/2
+        if(x<event.srcElement.offsetLeft)x=event.srcElement.offsetLeft
+          if(x>event.srcElement.offsetLeft+event.srcElement.offsetWidth-offsetWidth)x=event.srcElement.offsetLeft+event.srcElement.offsetWidth-offsetWidth
+            style.posLeft=x
+        }
+      }
+    </script>
+
+  </head>
+
+  <body data-type="index">
+    <!--引用头部-->
+    {include file="public/top"} 
+    <!--/引用头部-->
+    <div class="tpl-page-container tpl-page-header-fixed">
+     <!--引用侧边栏-->
+     {include file="public/left"} 
+     <!--/引用侧边栏-->
+
+     <div class="tpl-content-wrapper">
+      <ol class="am-breadcrumb">
+        <li><a href="#" class="am-icon-pencil-square-o">项目管理</a></li>
+        <li><a href="#" class="am-icon-pencil-square-o">实验记录提交</a></li>
+        <li class="am-active">实验记录提交</li>
+      </ol>
+       <div class="tpl-portlet-components">
+        <div class="portlet-title">
+          <div class="caption font-green bold">
+            实验记录提交
+          </div>
+          <div class="tpl-portlet-input tpl-fz-ml">
+            <div class="portlet-input input-small input-inline">
+            </div>
+          </div>
+
+
+        </div>
+        <div class="tpl-block ">
+
+          <div class="am-g tpl-amazeui-form">
+
+
+            <div class="am-u-sm-12 am-u-md-9">
+              <form class="am-form am-form-horizontal" role="form" action="" method="post" enctype="multipart/form-data" >
+                <div class="am-form-group">
+                  <label for="research" class="am-u-sm-3 am-form-label">实验记录</label>
+                  <!--   <form method="post" action="" enctype="multipart/form-data"> -->
+                  <div class="am-u-sm-9">
+                   <div class="am-u-sm-8">
+                     <input type="text" class="file" id="f_file" placeholder="请选择文件上传" width:72%>
+                   </div>
+                   <div class="am-u-sm-4">
+                     <input type="button" class="btn btn-default am-radius " value="浏览文件" class="file" onClick="t_file.click()" >
+
+                   </div>
+
+
+                 </div> 
+                 <input name="upload" type="file" id="t_file" onchange="f_file.value=this.value" style="display:none">
+                 <!--   </form> -->
+
+               </div>
+               <div class="am-form-group" style="text-align: center;">
+                 <br>
+                 <button class="btn btn-default am-radius" type="submit">提交</button>
+               </div>
+             </form>
+           </div>
+         </div>
+       </div>
+
+     </div>
+
+
+
+
+
+
+
+
+
+
+   </div>
+
+ </div>
+
+ <script  src="__INDEX__/js/distpicker.data.js"></script> 
+ <script  src="__INDEX__/js/distpicker.js"></script> 
+ <script src="__INDEX__/js/jquery.min.js"></script>
+ <script src="__INDEX__/js/bootstrap.js"></script>   
+ <script src="__INDEX__/js/amazeui.min.js"></script>
+ <script src="__INDEX__/js/app.js"></script>
+ <script src="__INDEX__/js/fileinput.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>⼤学生生态环境科技创新大赛</title>
+<meta name="description" content="这是一个 index 页面">
+<meta name="keywords" content="index">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="icon" type="image/png" href="__INDEX__/i/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="__INDEX__/i/app-icon72x72@2x.png">
+<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+<link rel="stylesheet" href="__INDEX__/css/bootstrap.css" />
+<link rel="stylesheet" href="__INDEX__/css/amazeui.min.css" />
+<link rel="stylesheet" href="__INDEX__/fileinput.min.css"  />
+<link rel="stylesheet" href="__INDEX__/css/admin.css">
+<link rel="stylesheet" href="__INDEX__/css/app.css">
+<link rel="stylesheet" href="__INDEX__/font-awesome.css" >
+<link rel="stylesheet" href="__INDEX__/css/style.css" >
+<script src="__INDEX__/js/echarts.min.js"></script>
+</head>
+
+<body data-type="index">
+  {include file="public/top"} 
+  <div class="tpl-page-container tpl-page-header-fixed">
+    {include file="public/left"} 
+
+        <div class="tpl-content-wrapper">
+            
+          <ol class="am-breadcrumb">
+                <li><a href="#" class="am-icon-newspaper-o">项目管理</a></li>
+               
+                <li class="am-active">团队成员</li>
+            </ol>
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        添加团队成员
+                    </div>
+                    <div class="tpl-portlet-input tpl-fz-ml">
+                        <!--<div class="portlet-input input-small input-inline">
+                            <div class="input-icon right">
+                                <i class="am-icon-search"></i>
+                                <input type="text" class="form-control form-control-solid" placeholder="搜索..."> </div>
+                        </div>-->
+                    </div>
+
+
+                </div>
+                 <div class="tpl-block ">
+
+                    <div class="am-g tpl-amazeui-form">
+
+
+                        <div class="am-u-sm-12 am-u-md-9">
+                             <form class="am-form am-form-horizontal" method="post">
+                             <input type="hidden" name="team_id" value="{$team_id}">
+                                        <div class="am-form-group">
+                                    <label for="name" class="am-u-sm-3 am-form-label">姓名</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" id="name" name="name" placeholder="姓名">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+                                     
+                                <div class="am-form-group">
+                                    <label for="sex" class="am-u-sm-3 am-form-label">性别</label>
+                                    
+                                    <div class="am-u-sm-9">
+                                      
+                           <select  name="sex" id="sex" >
+                           <option selected="selected" value="0">--性别选择--</option>
+                          <option  value="男">男</option>
+                          <option  value="女">女</option>
+                          
+                            </select>
+                                    </div>
+                               
+                              
+                                 </div>
+
+                                         <div class="am-form-group">
+                                    <label for="eld" class="am-u-sm-3 am-form-label">年龄</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" name="age"  id="eld" placeholder="年龄">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+                                     
+                                       <div class="am-form-group">
+                                    <label for="place" class="am-u-sm-3 am-form-label">所在学校</label>
+                                     <div data-toggle="distpicker" >
+                                    <div class="am-u-sm-9">
+                                      
+                           <select  name="school" id="school" >
+                                   <option selected="selected" value="0">--学校选择--</option>
+                                   {volist name="schoolinfo" id="school"}
+                                   <option {if($xuex.school == $school.school)} selected="selected" {/if} value="{$school.school}">{$school.school}</option>
+                                   {/volist}
+                                   <!-- <option  value="浙江大学">浙江大学</option>
+                                   <option  value="宁波大学">宁波大学</option>
+                                   <option  value="浙江工业大学">浙江工业大学</option>
+                                   <option  value="杭州电子科技大学">杭州电子科技大学</option>
+                                   <option  value="浙江理工大学">浙江理工大学</option>
+                                   <option  value="浙江农林大学">浙江农林大学</option>
+                                   <option  value="浙江中医药大学">浙江中医药大学</option>
+                                   <option  value="浙江师范大学">浙江师范大学</option>
+                                   <option  value="杭州师范大学">杭州师范大学</option>
+                                   <option  value="浙江工商大学">浙江工商大学</option>
+                                   <option  value="宁波诺丁汉大学">宁波诺丁汉大学</option>
+                                   <option  value="公安海警学院">公安海警学院</option>
+                                   <option  value="宁波大红鹰学院">宁波大红鹰学院</option>
+                                   <option  value="浙江越秀外国语学院">浙江越秀外国语学院</option>
+                                   <option  value="宁波工程学院">宁波工程学院</option>
+                                   <option  value="中国计量学院">中国计量学院</option>
+                                   <option  value="浙江科技学院">浙江科技学院</option>
+                                   <option  value="浙江海洋学院">浙江海洋学院</option>
+                                   <option  value="温州医学院">温州医学院</option>
+                                   <option  value="绍兴文理学院">绍兴文理学院</option>
+                                   <option  value="湖州师范学院">湖州师范学院</option>
+                                   <option  value="浙江传媒学院">浙江传媒学院</option>
+                                   <option  value="浙江外国语学院">浙江外国语学院</option>
+                                   <option  value="浙江财经学院">浙江财经学院</option>
+                                   <option  value="浙江警察学院">浙江警察学院</option>
+                                   <option  value="中国美术学院">中国美术学院</option>
+                                   <option  value="丽水学院">丽水学院</option>
+                                   <option  value="浙江树人学院">浙江树人学院</option>
+                                   <option  value="浙江万里学院">浙江万里学院</option>
+                                   <option  value="衢州学院">衢州学院</option>
+                                   <option  value="浙江水利水电专科学校">浙江水利水电专科学校</option>
+                                   <option  value="浙江医药高等专科学校">浙江医药高等专科学校</option>
+                                   <option  value="浙江医学高等专科学校">浙江医学高等专科学校</option>
+                                   <option  value="宁波职业技术学院">宁波职业技术学院</option>
+                                   <option  value="金华职业技术学院">金华职业技术学院</option>
+                                   <option  value="浙江交通职业技术学院">浙江交通职业技术学院</option>
+                                   <option  value="温州职业技术学院">温州职业技术学院</option>
+                                   <option  value="台州职业技术学院">台州职业技术学院</option>
+                                   <option  value="浙江旅游职业学院">浙江旅游职业学院</option>
+                                   <option  value="宁波城市职业技术学院">宁波城市职业技术学院</option>
+                                   <option  value="浙江工商职业技术学院">浙江工商职业技术学院</option>
+                                   <option  value="浙江经济职业技术学院">浙江经济职业技术学院</option>
+                                   <option  value="浙江机电职业技术学院">浙江机电职业技术学院</option>
+                                   <option  value="杭州万向职业技术学院">杭州万向职业技术学院</option>
+                                   <option  value="浙江商业职业技术学院">浙江商业职业技术学院</option>
+                                   <option  value="浙江汽车职业技术学院">浙江汽车职业技术学院</option>
+                                   <option  value="浙江横店影视职业学院">浙江横店影视职业学院</option>
+                                   <option  value="浙江警官职业学院">浙江警官职业学院</option>
+                                   <option  value="嘉兴南洋职业技术学院">嘉兴南洋职业技术学院</option>
+                                   <option  value="浙江工业职业技术学院">浙江工业职业技术学院</option>
+                                   <option  value="杭州科技职业技术学院">杭州科技职业技术学院</option>
+                                   <option  value="浙江建设职业技术学院">浙江建设职业技术学院</option>
+                                   <option  value="浙江经贸职业技术学院">浙江经贸职业技术学院</option>
+                                   <option  value="浙江育英职业技术学院">浙江育英职业技术学院</option>
+                                   <option  value="温州科技职业学院">温州科技职业学院</option>
+                                   <option  value="浙江长征职业技术学院">浙江长征职业技术学院</option>
+                                   <option  value="绍兴职业技术学院">绍兴职业技术学院</option>
+                                   <option  value="杭州职业技术学院">杭州职业技术学院</option>
+                                   <option  value="浙江纺织服装职业技术学院">浙江纺织服装职业技术学院</option>
+                                   <option  value="台州科技职业学院">台州科技职业学院</option>
+                                   <option  value="浙江邮电职业技术学院">浙江邮电职业技术学院</option>
+                                   <option  value="浙江同济科技职业学院">浙江同济科技职业学院</option>
+                                   <option  value="浙江广厦建设职业技术学院">浙江广厦建设职业技术学院</option>
+                                   <option  value="浙江体育职业技术学院">浙江体育职业技术学院</option>
+                                   <option  value="宁波卫生职业技术学院">宁波卫生职业技术学院</option>
+                                   <option  value="浙江工贸职业技术学院">浙江工贸职业技术学院</option>
+                                   <option  value="浙江国际海运职业技术学院">浙江国际海运职业技术学院</option>
+                                   <option  value="嘉兴职业技术学院">嘉兴职业技术学院</option>
+                                   <option  value="湖州职业技术学院">湖州职业技术学院</option>
+                                   <option  value="衢州职业技术学院">衢州职业技术学院</option>
+                                   <option  value="丽水职业技术学院">丽水职业技术学院</option>
+                                   <option  value="浙江金融职业学院">浙江金融职业学院</option>
+                                   <option  value="义乌工商职业技术学院">义乌工商职业技术学院</option>
+                                   <option  value="浙江东方职业技术学院">浙江东方职业技术学院</option>
+                                   <option  value="浙江艺术职业学院">浙江艺术职业学院</option>
+                                   <option  value="浙江农业商贸职业学院">浙江农业商贸职业学院</option>
+                                   <option  value="浙江电力职业技术学院">浙江电力职业技术学院</option> -->
+                                   </select>
+                                    </div>
+                               
+                                </div>
+                                 </div>
+
+                                   <div class="am-form-group">
+                                    <label for="professional" class="am-u-sm-3 am-form-label">年级专业</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" name="major"  id="professional" placeholder="年级专业">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="role" value="0">
+                                     <!-- <div class="am-form-group">
+                                    <label for="member" class="am-u-sm-3 am-form-label">团队角色</label>
+                                    
+                                    <div class="am-u-sm-9">
+                                      
+                           <select  name="role" id="member" >
+                           <option selected="selected">--角色选择--</option>
+                          <option  value="2">队长</option>
+                          <option  value="1">指导老师</option>
+                          <option  value="0">队员</option>
+                          
+                            </select>
+                                    </div>
+                               
+                              
+                                 </div> -->
+
+                              
+                         
+                                   <div class="am-form-group">
+                                    <label for="user-phone" class="am-u-sm-3 am-form-label">联系方式 </label>
+                                    <div class="am-u-sm-9">
+                                        <input type="tel" name="phone" id="user-phone" placeholder="联系方式 ">
+                                    </div>
+                                </div>
+                           
+                                  <div class="am-form-group" style="text-align: center;">
+                                 <br>
+                                 <button class="btn btn-default am-radius" type="submit">提交</button>
+                                </div>
+                               
+                               
+                               
+
+
+
+        
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+    <script  src="__INDEX__/js/distpicker.data.js"></script> 
+<script  src="__INDEX__/js/distpicker.js"></script> 
+    <script src="__INDEX__/js/jquery.min.js"></script>
+     <script src="__INDEX__/js/bootstrap.js"></script>   
+    <script src="__INDEX__/js/amazeui.min.js"></script>
+    <script src="__INDEX__/js/app.js"></script>
+    <script src="__INDEX__/js/fileinput.js"></script>
+ 
+    
+</body>
+
+</html>

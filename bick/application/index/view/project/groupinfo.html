@@ -1,0 +1,307 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>⼤学生生态环境科技创新大赛</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="__INDEX__/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="__INDEX__/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="__INDEX__/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="__INDEX__/css/amazeui.min.css" />
+  <link rel="stylesheet" href="__INDEX__/css/admin.css">
+  <link rel="stylesheet" href="__INDEX__/css/app.css">
+  <link rel="stylesheet" href="__INDEX__/css/font-awesome.css" >
+  <link rel="stylesheet" href="__INDEX__/css/style.css" >
+  <script src="__INDEX__/js/echarts.min.js"></script>
+</head>
+
+<body data-type="index">
+  <!--引用头部-->
+  {include file="public/top"} 
+  <!--/引用头部-->
+  <div class="tpl-page-container tpl-page-header-fixed">
+    <!--引用侧边栏-->
+    {include file="public/left"} 
+    <!--/引用侧边栏-->
+
+
+  <div class="tpl-content-wrapper">
+    <ol class="am-breadcrumb">
+      <li><a href="#">项目管理</a></li>
+      <li class="am-active">团队信息</li>
+    </ol>
+
+    <div class="row">
+      <div class="am-u-md-6 am-u-sm-12 row-mb">
+        <div class="tpl-portlet">
+          <div class="tpl-portlet-title">
+            <div class="tpl-caption font-green">
+              <span>团队信息</span>
+            </div>
+            <div class="actions">
+
+            </div>  
+          </div>
+
+          <div class="tpl-scrollable">
+            <div class="am-u-sm-12 xa-groupinfo-jz">
+              <div class="am-u-sm-5 xa-groupinfo-img">
+               <img src="__INDEX__/img/group1.png" alt="" >
+
+             </div>
+             <div class="am-u-sm-7 xa-groupinfo-group">
+               <p class="font-green">{$team.name}</p>
+               <span>{$team.school}</span>
+               <br>
+               <span>{$team.project}<span>  
+
+               </div>
+             </div>
+                <!--<div class="am-u-sm-12 xa-groupinfo-edit" style="text-align: center;">
+                  <a class="btn btn-default " href="#">修改密码</a>
+                </div>-->
+                
+                <div class="am-u-sm-12">
+                  <table class="am-table tpl-table xa-groupinfo-table">
+                    <tbody>
+                    
+                      <tr>
+                      
+                        <td>队长</td>
+                        {volist name="team['member']" id="member"}
+                        {if($member.role == 2)}<td><span class="font-green bold">{$member.name}</span><!-- &nbsp;&nbsp;&nbsp;<i class="fa fa-mobile"></i>&nbsp;<span>{$member.phone}</span> --></td>{/if}
+                        {/volist}
+                      </tr>
+                      
+                      <tr>
+                        <td>团队联系电话</td>
+                        
+                        <td><span class="font-green bold">{$team.phone}</span></td>
+                       
+                      </tr>
+
+                      <tr >
+                      
+                        <td >指导老师</td>
+                        {volist name="team['member']" id="member"}
+                        {if($member.role == 1)}<td ><span class=" bold">{$member.name}</span></td>{/if}
+                        {/volist}
+                      </tr>
+                      <tr>
+                        <td>团队介绍</td>
+                        <td class="xa-tuanduijieshao" style="word-break:break-all">{$team.introduce}</td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          {if($bmdeadline['time'] > Time())}
+          <div class="am-u-md-6 am-u-sm-12 row-mb">
+            <div class="tpl-portlet">
+              <div class="tpl-portlet-title">
+                <div class="tpl-caption font-green">
+                  <span>团队信息/  </span><span>修改</span>
+                </div>
+                <div class="actions">
+
+                </div>  
+              </div>
+
+              <div class="tpl-scrollable">
+
+                <div class="am-u-sm-12 xa-groupinfo-form">
+                  <form class="am-form am-form-horizontal" method="post">
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">项目名称</label>
+                      <div class="am-u-sm-9 xa-groupinfo-input">
+                        <input type="text" name="project" value="{$team.project}">
+                      </div>
+                    </div>
+                    {volist name="team['member']" id="member"}
+                    {if($member.role == 2)}
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">队长</label>
+                      <div class="am-u-sm-9 xa-groupinfo-input">
+
+                        <input type="text" name="name1" value="{$member.name}">
+                        <!-- <select>
+                          <option value ="name">负责人</option>
+                          <option value ="name">指导老师</option>
+                        </select> -->
+                      </div>
+                    </div>
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">团队电话</label>
+                      <div class="am-u-sm-9 xa-groupinfo-input">
+                        <input type="text" name="phone" value="{$team.phone}">
+                      </div>
+                    </div>
+                    {/if}
+                    {/volist}
+                    {volist name="team['member']" id="member"}
+                    {if($member.role == 1)}
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">指导老师</label>
+                      <div class="am-u-sm-9 xa-groupinfo-input">
+                        <input type="text" name="name2" value="{$member.name}">
+                      </div>
+                    </div>
+                    {/if}
+                    
+                    {/volist}
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">团队介绍</label>
+                      <div class="am-u-sm-9 xa-groupinfo-input">
+                        <textarea name="introduce">{$team.introduce}</textarea>
+                      </div>
+                    </div>
+                    <!-- <div style="text-align: center;">
+                      <button class="btn btn-default am-btn-secondary" type="submit"><span class="am-icon-save"></span>  保存修改</button>
+                    </div> -->
+                     <div style="text-align: center;">
+                      <button class="btn btn-default am-btn-secondary" type="submit"><span class="am-icon-save"></span>  保存修改</button>
+                      
+                    </div>
+                  </form>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          {else}
+            <div class="am-u-md-6 am-u-sm-12 row-mb">
+            <div class="tpl-portlet">
+              <div class="tpl-portlet-title">
+                <div class="tpl-caption font-green">
+                  <span>团队信息/  </span><span>修改</span>
+                </div>
+                <div class="actions">
+
+                </div>  
+              </div>
+
+              <div class="tpl-scrollable">
+
+                <div class="am-u-sm-12 xa-groupinfo-form">
+                  <!-- <form class="am-form am-form-horizontal" method="post"> -->
+                    <div class="am-form-group">
+                     <label class="am-u-sm-3 am-form-label xa-groupinfo-label">项目名称</label>
+                       
+                        <!-- <div class="am-u-sm-9 xa-groupinfo-input ">
+                        <input type="text" name="project" value="{$team.project}">
+                      </div>-->
+                      <div class="am-u-sm-9 lst ">
+                       <!-- <input type="text" name="project" value="{$team.project}">-->
+                        {$team.project}
+                      </div>
+                    </div>
+                    {volist name="team['member']" id="member"}
+                    {if($member.role == 2)}
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">队长</label>
+                      
+                     <!-- <div class="am-u-sm-9 xa-groupinfo-input ">
+
+                        <input type="text" name="name1" value="{$member.name}"> </div>-->
+                                            <div class="am-u-sm-9 lst">
+
+                     <!--  <input type="text" name="name1" value="{$member.name}">-->
+                       {$member.name}
+                        <!-- <select>
+                          <option value ="name">负责人</option>
+                          <option value ="name">指导老师</option>
+                        </select> -->
+                      </div>
+                    </div>
+                    <div class="am-form-group">
+                     <label class="am-u-sm-3 am-form-label xa-groupinfo-label">团队电话</label>
+                       
+                   <!--   <div class="am-u-sm-9 xa-groupinfo-input">
+                        <input type="text" name="phone" value="{$member.phone}">
+                      </div>-->
+                                            <div class="am-u-sm-9 lst">
+                        {$team.phone}
+                      </div>
+                      <!--<div class="am-u-sm-9 lst">
+                        <input type="text" name="phone" value="{$member.phone}">
+                      </div>-->
+                    </div>
+                    {/if}
+                    {/volist}
+                    {volist name="team['member']" id="member"}
+                    {if($member.role == 1)}
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">指导老师</label>
+                       
+                   <!--   <div class="am-u-sm-9 xa-groupinfo-input">
+                        <input type="text" name="name2" value="{$member.name}">
+                      </div>-->
+                     <!--  <div class="am-u-sm-9 lst">
+                        <input   type="text" name="name2" value="{$member.name}">
+                      </div>-->
+                       <div class="am-u-sm-9 lst">
+                       {$member.name}
+                      </div>
+                    </div>
+                    {/if}
+                    
+                    {/volist}
+                    <div class="am-form-group">
+                      <label class="am-u-sm-3 am-form-label xa-groupinfo-label">团队介绍</label>
+                     
+                 <!--      <div class="am-u-sm-9 xa-groupinfo-input">
+                        <textarea name="introduce">{$team.introduce}</textarea>
+                      </div> -->
+                      <!--<div class="am-u-sm-9 lst ">
+                        <textarea name="introduce">{$team.introduce}</textarea>
+                      </div>-->
+                      <div class="am-u-sm-9 lst ">
+                       {$team.introduce}
+                      </div>
+                    </div>
+                    <!-- <div style=" text-align:center;" class="am-u-sm-9 lstt">
+                       修改时间已过
+                    </div> -->
+
+                    <div style="text-align: center;" class="am-u-sm-9 lstt ">
+                      <button class="btn btn-default am-btn-secondary"  disabled="disabled"><span class="am-icon-save"></span>  保存修改</button>
+                      <div><p style="color: #93a2a9;margin-top: 20px;">注：修改时间已过，不能再进行修改！</p></div>
+                    </div>
+
+                  </form>
+                </div>
+
+                <!-- <h1 style="color: red;text-align: center">修改时间已过！</h1> -->
+                
+              </div>
+            </div>
+          </div>
+          {/if}
+
+          <div class="am-u-md-6 am-u-sm-12 row-mb">
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <script  src="__INDEX__/js/distpicker.data.js"></script> 
+    <script  src="__INDEX__/js/distpicker.js"></script> 
+    <script src="__INDEX__/js/jquery.min.js"></script>
+    <script src="__INDEX__/js/amazeui.min.js"></script>
+    <script src="__INDEX__/js/app.js"></script>
+  </body>
+
+  </html>
