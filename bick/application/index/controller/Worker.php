@@ -1,6 +1,5 @@
-﻿<?php
-
-namespace app\push\controller;
+<?php
+namespace app\index\controller;
 
 use think\worker\Server;
 
@@ -56,3 +55,4 @@ class Worker extends Server
 
     }
 }
+?>

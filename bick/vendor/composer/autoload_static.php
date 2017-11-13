@@ -108,7 +108,8 @@ class ComposerStaticInit96a73aea62b1f1d5243690f8990d83ef
         ),
         'Workerman\\' => 
         array (
-            0 => __DIR__ . '/..' . '/workerman/workerman',
+            0 => __DIR__ . '/..' . '/workerman/workerman-for-win',
+            1 => __DIR__ . '/..' . '/workerman/workerman',
         ),
         'Webmozart\\Assert\\' => 
         array (

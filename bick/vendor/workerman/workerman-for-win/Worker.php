@@ -371,17 +371,17 @@ class Worker
     public static function runAll()
     {
         // 初始化环境变量
-        static::init();
+        self::init();
         // 解析命令
-        static::parseCommand();
+        self::parseCommand();
         // 初始化所有worker实例，主要是监听端口
-        static::initWorkers();
+        self::initWorkers();
         // 展示启动界面
-        static::displayUI();
+        self::displayUI();
         // 运行所有的worker
-        static::runAllWorkers();
+        self::runAllWorkers();
         // 监控worker
-        static::monitorWorkers();
+        self::monitorWorkers();
     }
     
     /**
@@ -399,18 +399,18 @@ class Worker
             exit("\r\nWarning: proc_open() has been disabled for security reasons. \r\n\r\nSee http://wiki.workerman.net/Error5\r\n");
         }
         $backtrace = debug_backtrace();
-        static::$_startFile = $backtrace[count($backtrace)-1]['file'];
+        self::$_startFile = $backtrace[count($backtrace)-1]['file'];
         // 没有设置日志文件，则生成一个默认值
-        if(empty(static::$logFile))
+        if(empty(self::$logFile))
         {
-            static::$logFile = __DIR__ . '/../workerman.log';
+            self::$logFile = __DIR__ . '/../workerman.log';
         }
         // 标记状态为启动中
-        static::$_status = static::STATUS_STARTING;
+        self::$_status = self::STATUS_STARTING;
         
-        $event_loop_class = static::getEventLoopName();
-        static::$globalEvent = new $event_loop_class;
-        Timer::init(static::$globalEvent);
+        $event_loop_class = self::getEventLoopName();
+        self::$globalEvent = new $event_loop_class;
+        Timer::init(self::$globalEvent);
     }
     
     /**
@@ -419,7 +419,7 @@ class Worker
      */
     protected static function initWorkers()
     {
-        foreach(static::$_workers as $worker)
+        foreach(self::$_workers as $worker)
         {
             // 没有设置worker名称，则使用none代替
             if(empty($worker->name))
@@ -428,20 +428,20 @@ class Worker
             }
             // 获得所有worker名称中最大长度
             $worker_name_length = strlen($worker->name);
-            if(static::$_maxWorkerNameLength < $worker_name_length)
+            if(self::$_maxWorkerNameLength < $worker_name_length)
             {
-                static::$_maxWorkerNameLength = $worker_name_length;
+                self::$_maxWorkerNameLength = $worker_name_length;
             }
             // 获得所有_socketName中最大长度
             $socket_name_length = strlen($worker->getSocketName());
-            if(static::$_maxSocketNameLength < $socket_name_length)
+            if(self::$_maxSocketNameLength < $socket_name_length)
             {
-                static::$_maxSocketNameLength = $socket_name_length;
+                self::$_maxSocketNameLength = $socket_name_length;
             }
             $user_name_length = strlen($worker->user);
-            if(static::$_maxUserNameLength < $user_name_length)
+            if(self::$_maxUserNameLength < $user_name_length)
             {
-                static::$_maxUserNameLength = $user_name_length;
+                self::$_maxUserNameLength = $user_name_length;
             }
         }
     }
@@ -452,35 +452,35 @@ class Worker
     public static function runAllWorkers()
     {
         // 只有一个start文件时执行run
-        if(count(static::$_startFiles) === 1)
+        if(count(self::$_startFiles) === 1)
         {
             // win不支持同一个页面执初始化多个worker
-            if(count(static::$_workers) > 1)
+            if(count(self::$_workers) > 1)
             {
                 echo "@@@ Error: multi workers init in one php file are not support @@@\r\n";
                 echo "@@@ Please visit http://wiki.workerman.net/Multi_woker_for_win @@@\r\n";
             }
-            elseif(count(static::$_workers) <= 0)
+            elseif(count(self::$_workers) <= 0)
             {
                 exit("@@@no worker inited@@@\r\n\r\n");
             }
             
             // 执行worker的run方法
-            reset(static::$_workers);
-            $worker = current(static::$_workers);
+            reset(self::$_workers);
+            $worker = current(self::$_workers);
             $worker->listen();
             // 子进程阻塞在这里
             $worker->run();
             exit("@@@child exit@@@\r\n");
         }
         // 多个start文件则多进程打开
-        elseif(count(static::$_startFiles) > 1)
+        elseif(count(self::$_startFiles) > 1)
         {
-            static::$globalEvent = new Select();
-            Timer::init(static::$globalEvent);
-            foreach(static::$_startFiles as $start_file)
+            self::$globalEvent = new Select();
+            Timer::init(self::$globalEvent);
+            foreach(self::$_startFiles as $start_file)
             {
-                static::openProcess($start_file);
+                self::openProcess($start_file);
             }
         }
         // 没有start文件提示错误
@@ -523,7 +523,7 @@ class Worker
         });
         
         // 保存子进程句柄
-        static::$_process[$start_file] = array($process, $start_file, $timer_id);
+        self::$_process[$start_file] = array($process, $start_file, $timer_id);
     }
     
     /**
@@ -535,12 +535,12 @@ class Worker
         Timer::add(0.5, "\\Workerman\\Worker::checkWorkerStatus");
         
         // 主进程loop
-        static::$globalEvent->loop();
+        self::$globalEvent->loop();
     }
     
     public static function checkWorkerStatus()
     {
-        foreach(static::$_process as $process_data)
+        foreach(self::$_process as $process_data)
         {
             $process = $process_data[0];
             $start_file = $process_data[1];
@@ -555,7 +555,7 @@ class Worker
                     Timer::del($timer_id);
                     @proc_close($process);
                     // 重新打开一个子进程
-                    static::openProcess($start_file);
+                    self::openProcess($start_file);
                 }
             }
             else
@@ -572,7 +572,7 @@ class Worker
      */
     public static function getAllWorkers()
     {
-        return static::$_workers;
+        return self::$_workers;
     }
 
     /**
@@ -582,7 +582,7 @@ class Worker
      */
     public static function getEventLoop()
     {
-        return static::$globalEvent;
+        return self::$globalEvent;
     }
     
     /**
@@ -600,10 +600,10 @@ class Worker
         echo "----------------------- WORKERMAN -----------------------------\n";
         echo 'Workerman version:' . Worker::VERSION . "          PHP version:".PHP_VERSION."\n";
         echo "------------------------ WORKERS -------------------------------\n";
-        echo "worker",str_pad('', static::$_maxWorkerNameLength+2-strlen('worker')), "listen",str_pad('', static::$_maxSocketNameLength+2-strlen('listen')), "processes ","status\n";
-        foreach(static::$_workers as $worker)
+        echo "worker",str_pad('', self::$_maxWorkerNameLength+2-strlen('worker')), "listen",str_pad('', self::$_maxSocketNameLength+2-strlen('listen')), "processes ","status\n";
+        foreach(self::$_workers as $worker)
         {
-            echo str_pad($worker->name, static::$_maxWorkerNameLength+2),str_pad($worker->getSocketName(), static::$_maxSocketNameLength+2), str_pad(' '.$worker->count, 9), " [OK] \n";;
+            echo str_pad($worker->name, self::$_maxWorkerNameLength+2),str_pad($worker->getSocketName(), self::$_maxSocketNameLength+2), str_pad(' '.$worker->count, 9), " [OK] \n";;
         }
         echo "----------------------------------------------------------------\n";
         echo "Press Ctrl-C to quit. Start success.\n";
@@ -626,7 +626,7 @@ class Worker
             }
             if(is_file($file))
             {
-                static::$_startFiles[$file] = $file;
+                self::$_startFiles[$file] = $file;
                 include_once $file;
             }
         }
@@ -638,7 +638,7 @@ class Worker
      */
     public static function stopAll()
     {
-        static::$_status = static::STATUS_SHUTDOWN;
+        self::$_status = self::STATUS_SHUTDOWN;
         exit(0);
     }
     
@@ -650,11 +650,11 @@ class Worker
     public static function log($msg)
     {
         $msg = $msg."\n";
-        if(static::$_status === static::STATUS_STARTING || !static::$daemonize)
+        if(self::$_status === self::STATUS_STARTING || !self::$daemonize)
         {
             echo $msg;
         }
-        file_put_contents(static::$logFile, date('Y-m-d H:i:s') . " " . $msg, FILE_APPEND | LOCK_EX);
+        file_put_contents(self::$logFile, date('Y-m-d H:i:s') . " " . $msg, FILE_APPEND | LOCK_EX);
     }
     
     /**
@@ -666,8 +666,8 @@ class Worker
     {
         // 保存worker实例
         $this->workerId = spl_object_hash($this);
-        static::$_workers[$this->workerId] = $this;
-        static::$_pidMap[$this->workerId] = array();
+        self::$_workers[$this->workerId] = $this;
+        self::$_pidMap[$this->workerId] = array();
         
         // 获得实例化文件路径，用于自动加载设置根目录
         $backrace = debug_backtrace();
@@ -679,7 +679,7 @@ class Worker
             $this->_socketName = $socket_name;
             if(!isset($context_option['socket']['backlog']))
             {
-                $context_option['socket']['backlog'] = static::DEFAUL_BACKLOG;
+                $context_option['socket']['backlog'] = self::DEFAUL_BACKLOG;
             }
             $this->_context = stream_context_create($context_option);
         }
@@ -704,7 +704,7 @@ class Worker
         // Get the application layer communication protocol and listening address.
         list($scheme, $address) = explode(':', $this->_socketName, 2);
         // Check application layer protocol class.
-        if (!isset(static::$_builtinTransports[$scheme])) {
+        if (!isset(self::$_builtinTransports[$scheme])) {
             if(class_exists($scheme)){
                 $this->protocol = $scheme;
             } else {
@@ -717,14 +717,14 @@ class Worker
                     }
                 }
             }
-            if (!isset(static::$_builtinTransports[$this->transport])) {
+            if (!isset(self::$_builtinTransports[$this->transport])) {
                 throw new \Exception('Bad worker->transport ' . var_export($this->transport, true));
             }
         } else {
             $this->transport = $scheme;
         }
 
-        $local_socket = static::$_builtinTransports[$this->transport] . ":" . $address;
+        $local_socket = self::$_builtinTransports[$this->transport] . ":" . $address;
 
         // Flag.
         $flags  = $this->transport === 'udp' ? STREAM_SERVER_BIND : STREAM_SERVER_BIND | STREAM_SERVER_LISTEN;
@@ -746,7 +746,7 @@ class Worker
         }
 
         // Try to open keepalive for tcp and disable Nagle algorithm.
-        if (function_exists('socket_import_stream') && static::$_builtinTransports[$this->transport] === 'tcp') {
+        if (function_exists('socket_import_stream') && self::$_builtinTransports[$this->transport] === 'tcp') {
             $socket = socket_import_stream($this->_mainSocket);
             @socket_set_option($socket, SOL_SOCKET, SO_KEEPALIVE, 1);
             @socket_set_option($socket, SOL_TCP, TCP_NODELAY, 1);
@@ -756,11 +756,11 @@ class Worker
         stream_set_blocking($this->_mainSocket, 0);
 
         // Register a listener to be notified when server socket is ready to read.
-        if (static::$globalEvent) {
+        if (self::$globalEvent) {
             if ($this->transport !== 'udp') {
-                static::$globalEvent->add($this->_mainSocket, EventInterface::EV_READ, array($this, 'acceptConnection'));
+                self::$globalEvent->add($this->_mainSocket, EventInterface::EV_READ, array($this, 'acceptConnection'));
             } else {
-                static::$globalEvent->add($this->_mainSocket, EventInterface::EV_READ,
+                self::$globalEvent->add($this->_mainSocket, EventInterface::EV_READ,
                     array($this, 'acceptUdpConnection'));
             }
         }
@@ -773,12 +773,12 @@ class Worker
      */
     protected static function getEventLoopName()
     {
-        if (static::$eventLoopClass) {
-            return static::$eventLoopClass;
+        if (self::$eventLoopClass) {
+            return self::$eventLoopClass;
         }
 
         $loop_name = '';
-        foreach (static::$_availableEventLoops as $name=>$class) {
+        foreach (self::$_availableEventLoops as $name=>$class) {
             if (extension_loaded($name)) {
                 $loop_name = $name;
                 break;
@@ -789,22 +789,22 @@ class Worker
             if (interface_exists('\React\EventLoop\LoopInterface')) {
                 switch ($loop_name) {
                     case 'libevent':
-                        static::$eventLoopClass = '\Workerman\Events\React\LibEventLoop';
+                        self::$eventLoopClass = '\Workerman\Events\React\LibEventLoop';
                         break;
                     case 'event':
-                        static::$eventLoopClass = '\Workerman\Events\React\ExtEventLoop';
+                        self::$eventLoopClass = '\Workerman\Events\React\ExtEventLoop';
                         break;
                     default :
-                        static::$eventLoopClass = '\Workerman\Events\React\StreamSelectLoop';
+                        self::$eventLoopClass = '\Workerman\Events\React\StreamSelectLoop';
                         break;
                 }
             } else {
-                static::$eventLoopClass = static::$_availableEventLoops[$loop_name];
+                self::$eventLoopClass = self::$_availableEventLoops[$loop_name];
             }
         } else {
-            static::$eventLoopClass = interface_exists('\React\EventLoop\LoopInterface')? '\Workerman\Events\React\StreamSelectLoop':'\Workerman\Events\Select';
+            self::$eventLoopClass = interface_exists('\React\EventLoop\LoopInterface')? '\Workerman\Events\React\StreamSelectLoop':'\Workerman\Events\Select';
         }
-        return static::$eventLoopClass;
+        return self::$eventLoopClass;
     }
     
     /**
@@ -825,9 +825,9 @@ class Worker
         Autoloader::setRootPath($this->_autoloadRootPath);
 
         // Create a global event loop.
-        if (!static::$globalEvent) {
-            $event_loop_class = static::getEventLoopName();
-            static::$globalEvent = new $event_loop_class;
+        if (!self::$globalEvent) {
+            $event_loop_class = self::getEventLoopName();
+            self::$globalEvent = new $event_loop_class;
         }
 
         // 监听_mainSocket上的可读事件（客户端连接事件）
@@ -835,16 +835,16 @@ class Worker
         {
             if($this->transport !== 'udp')
             {
-                static::$globalEvent->add($this->_mainSocket, EventInterface::EV_READ, array($this, 'acceptConnection'));
+                self::$globalEvent->add($this->_mainSocket, EventInterface::EV_READ, array($this, 'acceptConnection'));
             }
             else
             {
-                static::$globalEvent->add($this->_mainSocket,  EventInterface::EV_READ, array($this, 'acceptUdpConnection'));
+                self::$globalEvent->add($this->_mainSocket,  EventInterface::EV_READ, array($this, 'acceptUdpConnection'));
             }
         }
         
         // 用全局事件轮询初始化定时器
-        Timer::init(static::$globalEvent);
+        Timer::init(self::$globalEvent);
         
         // 如果有设置进程启动回调，则执行
         if($this->onWorkerStart)
@@ -853,7 +853,7 @@ class Worker
         }
         
         // 子进程主循环
-        static::$globalEvent->loop();
+        self::$globalEvent->loop();
     }
     
     /**
@@ -868,7 +868,7 @@ class Worker
             call_user_func($this->onWorkerStop, $this);
         }
         // 删除相关监听事件，关闭_mainSocket
-        static::$globalEvent->del($this->_mainSocket, EventInterface::EV_READ);
+        self::$globalEvent->del($this->_mainSocket, EventInterface::EV_READ);
         @fclose($this->_mainSocket);
     }
 
@@ -903,10 +903,10 @@ class Worker
             try {
                 call_user_func($this->onConnect, $connection);
             } catch (\Exception $e) {
-                static::log($e);
+                self::log($e);
                 exit(250);
             } catch (\Error $e) {
-                static::log($e);
+                self::log($e);
                 exit(250);
             }
         }
@@ -918,7 +918,7 @@ class Worker
      */
     public function acceptUdpConnection($socket)
     {
-        $recv_buffer = stream_socket_recvfrom($socket, static::MAX_UDP_PACKAGE_SIZE, 0, $remote_address);
+        $recv_buffer = stream_socket_recvfrom($socket, self::MAX_UDP_PACKAGE_SIZE, 0, $remote_address);
         if (false === $recv_buffer || empty($remote_address)) {
             return false;
         }
@@ -934,10 +934,10 @@ class Worker
             try {
                 call_user_func($this->onMessage, $connection, $recv_buffer);
             } catch (\Exception $e) {
-                static::log($e);
+                self::log($e);
                 exit(250);
             } catch (\Error $e) {
-                static::log($e);
+                self::log($e);
                 exit(250);
             }
         }

@@ -15,15 +15,15 @@ namespace Workerman\Events\React;
 use Workerman\Events\EventInterface;
 
 /**
- * Class ExtEventLoop
+ * Class LibEventLoop
  * @package Workerman\Events\React
  */
-class ExtEventLoop extends \React\EventLoop\ExtEventLoop
+class LibEventLoop extends \React\EventLoop\LibEventLoop
 {
     /**
      * Event base.
      *
-     * @var EventBase
+     * @var event_base resource
      */
     protected $_eventBase = null;
 
@@ -64,20 +64,17 @@ class ExtEventLoop extends \React\EventLoop\ExtEventLoop
             case EventInterface::EV_SIGNAL:
                 return $this->addSignal($fd, $func);
             case EventInterface::EV_TIMER:
-                $timer_id = ++$this->_timerIdIndex;
                 $timer_obj = $this->addPeriodicTimer($fd, function() use ($func, $args) {
                     call_user_func_array($func, $args);
                 });
-                $this->_timerIdMap[$timer_id] = $timer_obj;
-                return $timer_id;
+                $this->_timerIdMap[++$this->_timerIdIndex] = $timer_obj;
+                return $this->_timerIdIndex;
             case EventInterface::EV_TIMER_ONCE:
-                $timer_id = ++$this->_timerIdIndex;
-                $timer_obj = $this->addTimer($fd, function() use ($func, $args, $timer_id) {
-                    unset($this->_timerIdMap[$timer_id]);
+                $timer_obj = $this->addTimer($fd, function() use ($func, $args) {
                     call_user_func_array($func, $args);
                 });
-                $this->_timerIdMap[$timer_id] = $timer_obj;
-                return $timer_id;
+                $this->_timerIdMap[++$this->_timerIdIndex] = $timer_obj;
+                return $this->_timerIdIndex;
         }
         return false;
     }
@@ -122,12 +119,12 @@ class ExtEventLoop extends \React\EventLoop\ExtEventLoop
     }
 
     /**
-     * Construct
+     * Construct.
      */
     public function __construct()
     {
         parent::__construct();
-        $class = new \ReflectionClass('\React\EventLoop\ExtEventLoop');
+        $class = new \ReflectionClass('\React\EventLoop\LibEventLoop');
         $property = $class->getProperty('eventBase');
         $property->setAccessible(true);
         $this->_eventBase = $property->getValue($this);
@@ -142,11 +139,11 @@ class ExtEventLoop extends \React\EventLoop\ExtEventLoop
      */
     public function addSignal($signal, $callback)
     {
-        $event = \Event::signal($this->_eventBase, $signal, $callback);
-        if (!$event||!$event->add()) {
-            return false;
-        }
+        $event = event_new();
         $this->_signalEvents[$signal] = $event;
+        event_set($event, $signal, EV_SIGNAL | EV_PERSIST, $callback);
+        event_base_set($event, $this->_eventBase);
+        event_add($event);
     }
 
     /**
@@ -157,7 +154,8 @@ class ExtEventLoop extends \React\EventLoop\ExtEventLoop
     public function removeSignal($signal)
     {
         if (isset($this->_signalEvents[$signal])) {
-            $this->_signalEvents[$signal]->del();
+            $event = $this->_signalEvents[$signal];
+            event_del($event);
             unset($this->_signalEvents[$signal]);
         }
     }
@@ -170,17 +168,7 @@ class ExtEventLoop extends \React\EventLoop\ExtEventLoop
     public function destroy()
     {
         foreach ($this->_signalEvents as $event) {
-            $event->del();
+            event_del($event);
         }
-    }
-
-    /**
-     * Get timer count.
-     *
-     * @return integer
-     */
-    public function getTimerCount()
-    {
-        return count($this->_timerIdMap);
     }
 }

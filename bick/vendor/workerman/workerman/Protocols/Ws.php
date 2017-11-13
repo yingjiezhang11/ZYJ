@@ -375,7 +375,7 @@ class Ws
         "Upgrade: websocket\r\n".
         "Origin: ". (isset($connection->websocketOrigin) ? $connection->websocketOrigin : '*') ."\r\n".
         "Sec-WebSocket-Version: 13\r\n".
-        "Sec-WebSocket-Key: " . base64_encode(md5(mt_rand(), true)) . "\r\n\r\n";
+        "Sec-WebSocket-Key: ".base64_encode(sha1(uniqid(mt_rand(), true), true))."\r\n\r\n";
         $connection->send($header, true);
         $connection->handshakeStep               = 1;
         $connection->websocketCurrentFrameLength = 0;
@@ -412,7 +412,7 @@ class Ws
             // Headbeat.
             if (!empty($connection->websocketPingInterval)) {
                 $connection->websocketPingTimer = Timer::add($connection->websocketPingInterval, function() use ($connection){
-                    if (false === $connection->send(pack('H*', '898000000000'), true)) {
+                    if (false === $connection->send(pack('H*', '8900'), true)) {
                         Timer::del($connection->websocketPingTimer);
                         $connection->websocketPingTimer = null;
                     }

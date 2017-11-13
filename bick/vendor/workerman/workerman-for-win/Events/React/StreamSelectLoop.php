@@ -15,25 +15,11 @@ namespace Workerman\Events\React;
 use Workerman\Events\EventInterface;
 
 /**
- * Class LibEventLoop
+ * Class StreamSelectLoop
  * @package Workerman\Events\React
  */
-class LibEventLoop extends \React\EventLoop\LibEventLoop
+class StreamSelectLoop extends \React\EventLoop\StreamSelectLoop
 {
-    /**
-     * Event base.
-     *
-     * @var event_base resource
-     */
-    protected $_eventBase = null;
-
-    /**
-     * All signal Event instances.
-     *
-     * @var array
-     */
-    protected $_signalEvents = array();
-
     /**
      * @var array
      */
@@ -64,20 +50,19 @@ class LibEventLoop extends \React\EventLoop\LibEventLoop
             case EventInterface::EV_SIGNAL:
                 return $this->addSignal($fd, $func);
             case EventInterface::EV_TIMER:
-                $timer_id = ++$this->_timerIdIndex;
                 $timer_obj = $this->addPeriodicTimer($fd, function() use ($func, $args) {
                     call_user_func_array($func, $args);
                 });
-                $this->_timerIdMap[$timer_id] = $timer_obj;
-                return $timer_id;
+                $this->_timerIdMap[++$this->_timerIdIndex] = $timer_obj;
+                return $this->_timerIdIndex;
             case EventInterface::EV_TIMER_ONCE:
-                $timer_id = ++$this->_timerIdIndex;
-                $timer_obj = $this->addTimer($fd, function() use ($func, $args, $timer_id) {
-                    unset($this->_timerIdMap[$timer_id]);
+                $index = ++$this->_timerIdIndex;
+                $timer_obj = $this->addTimer($fd, function() use ($func, $args, $index) {
+                    $this->del($index,EventInterface::EV_TIMER_ONCE);
                     call_user_func_array($func, $args);
                 });
-                $this->_timerIdMap[$timer_id] = $timer_obj;
-                return $timer_id;
+                $this->_timerIdMap[$index] = $timer_obj;
+                return $this->_timerIdIndex;
         }
         return false;
     }
@@ -122,18 +107,6 @@ class LibEventLoop extends \React\EventLoop\LibEventLoop
     }
 
     /**
-     * Construct.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $class = new \ReflectionClass('\React\EventLoop\LibEventLoop');
-        $property = $class->getProperty('eventBase');
-        $property->setAccessible(true);
-        $this->_eventBase = $property->getValue($this);
-    }
-
-    /**
      * Add signal handler.
      *
      * @param $signal
@@ -142,11 +115,9 @@ class LibEventLoop extends \React\EventLoop\LibEventLoop
      */
     public function addSignal($signal, $callback)
     {
-        $event = event_new();
-        $this->_signalEvents[$signal] = $event;
-        event_set($event, $signal, EV_SIGNAL | EV_PERSIST, $callback);
-        event_base_set($event, $this->_eventBase);
-        event_add($event);
+        if(DIRECTORY_SEPARATOR === '/') {
+            pcntl_signal($signal, $callback);
+        }
     }
 
     /**
@@ -156,11 +127,41 @@ class LibEventLoop extends \React\EventLoop\LibEventLoop
      */
     public function removeSignal($signal)
     {
-        if (isset($this->_signalEvents[$signal])) {
-            $event = $this->_signalEvents[$signal];
-            event_del($event);
-            unset($this->_signalEvents[$signal]);
+        if(DIRECTORY_SEPARATOR === '/') {
+            pcntl_signal($signal, SIG_IGN);
         }
+    }
+
+    /**
+     * Emulate a stream_select() implementation that does not break when passed
+     * empty stream arrays.
+     *
+     * @param array        &$read   An array of read streams to select upon.
+     * @param array        &$write  An array of write streams to select upon.
+     * @param integer|null $timeout Activity timeout in microseconds, or null to wait forever.
+     *
+     * @return integer|false The total number of streams that are ready for read/write.
+     * Can return false if stream_select() is interrupted by a signal.
+     */
+    protected function streamSelect(array &$read, array &$write, $timeout)
+    {
+        if ($read || $write) {
+            $except = null;
+            // Calls signal handlers for pending signals
+            if(DIRECTORY_SEPARATOR === '/') {
+                pcntl_signal_dispatch();
+            }
+            // suppress warnings that occur, when stream_select is interrupted by a signal
+            return @stream_select($read, $write, $except, $timeout === null ? null : 0, $timeout);
+        }
+
+        // Calls signal handlers for pending signals
+        if(DIRECTORY_SEPARATOR === '/') {
+            pcntl_signal_dispatch();
+        }
+        $timeout && usleep($timeout);
+
+        return 0;
     }
 
     /**
@@ -170,18 +171,6 @@ class LibEventLoop extends \React\EventLoop\LibEventLoop
      */
     public function destroy()
     {
-        foreach ($this->_signalEvents as $event) {
-            event_del($event);
-        }
-    }
 
-    /**
-     * Get timer count.
-     *
-     * @return integer
-     */
-    public function getTimerCount()
-    {
-        return count($this->_timerIdMap);
     }
 }
