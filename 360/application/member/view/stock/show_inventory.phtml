@@ -1,0 +1,90 @@
+
+<div class="panel">
+    <div class="panel-heading">
+        库存管理
+    </div>
+    <div class="panel-body">
+        <div class="row">
+
+            <div class="col-sm-12 mySearch">
+                <form class="form-inline" id="searchForm" action="{:request()->url()}">
+                    <div class="form-group">
+                        <label>关键字：</label>
+                        <input type="text" class="form-control" placeholder="名字" name="kw">
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+                <script>
+                    $('#searchForm').myFormData(<?= json_encode(input('get.'), JSON_UNESCAPED_UNICODE) ?>);
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>供应商</th>
+                <th>产品类目</th>
+                <th>产品编码</th>
+                <th>产品名称</th>
+                <th style="width:100px;">库存数量</th>
+                <th style="width:100px;">盘点数量</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                $pd= \app\member\model\StockInventoryData::where(['pid'=>$row['id'],'iid'=>input('get.id')])->find();
+                ?>
+                <tr>
+                    <form class="form-horizontal" action="{:request()->url()}" method="post" id="editForm{$i}">
+                    <td>{$i+1}</td>
+                    <?php $gys= \app\member\model\StockSet::get_cname($row['gid']);?>
+                    <td>{$gys}</td>
+                    <?php $fenlei= \app\member\model\StockSet::get_cname($row['fid']);?>
+                    <td><input type="hidden" class="form-control" name="pid" value="{$row.id}">{$fenlei}</td>
+                    <td>{$row.sn}</td>
+                    <td>{$row.pname}</td>
+                    <td>
+                        <?php if($pd){?>
+                        <input type="text" class="form-control" name="old_amount" value="{$row.amount}" disabled>
+                        <?php }else{?>
+                        <input type="hidden" class="form-control" name="old_amount" value="{$row.amount}">
+                        <a class="btn btn-warning">还未盘点</a>
+                        <?php }?>
+                    </td>
+                    <td><input type="number" class="form-control" name="new_amount" value="{$pd.new_amount}"<?php if($pd){ echo " disabled"; }?>></td>
+                    <td><input type="text" class="form-control" name="remark" value="{$pd.remark}"<?php if($pd){ echo " disabled"; }?>></td>
+                    <td>
+                        <?php if(!$pd){?>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                        <?php }elseif($pd['old_amount']==$pd['new_amount']){?>
+                        <a class="btn btn-info">库存正常</a>
+                        <?php }elseif($pd['old_amount']!=$pd['new_amount']){?>
+                        <a class="btn btn-danger">库存异常</a>
+                        <?php }?>
+                    </td>
+                    </form>
+            <script>
+                $(function(){
+                    $('#editForm{$i}').myForm();
+                    <?php if ($pd) { ?>
+                    var oneData = <?=json_encode($pd, JSON_UNESCAPED_UNICODE)?>;
+                    $('#editForm{$i}').myFormData(oneData);
+                    <?php } ?>
+                    pageInit();
+                })
+            </script>
+                </tr>
+                <?php
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

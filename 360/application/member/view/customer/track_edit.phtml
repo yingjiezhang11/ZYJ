@@ -1,0 +1,45 @@
+<script src="__INDEX__/distpicker.min.js"></script>
+<form class="form-horizontal" method="post" id="editForm" action="{:request()->url()}">
+
+                    <div class="form-group">
+                        <label class="col-sm-2">对接人：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="linkman" placeholder="">
+                        </div>
+                        <label class="col-sm-2">跟踪方式：</label>
+                        <div class="col-sm-4">
+                            <{tmdTag:select name="type" optname="track_type" /}>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2">备注：</label>
+                        <div class="col-sm-10">
+                            <textarea name="remark" rows="10" style="width:100%" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">下次回访时间：</label>
+                        <div class="col-sm-9">
+                            <{tmdTag:date name="retime"/}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="hidden" class="form-control" name="id">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+
+                </form>
+
+<script>pageInit();</script>
+<script>
+    $('#editForm').myForm();
+    
+    // <?php if ($editData) { ?> //
+    var editData = <?=json_encode($editData, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(editData);
+    // <?php } ?> //
+
+</script>

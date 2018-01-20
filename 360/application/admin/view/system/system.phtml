@@ -1,0 +1,152 @@
+
+<div class="panel">
+    <div class="panel-heading">
+        系统设置
+    </div>
+    <div class="panel-body">
+        
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-tab href="#tabCustomer">基本设置</a></li>
+            <li><a data-tab href="#tabCar">附件设置</a></li>
+            <li><a data-tab href="#tabWechat">微信设置</a></li>
+        </ul>
+        <form class="form-horizontal" method="post" action="{:request()->url()}" id="editForm">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tabCustomer">
+
+                
+                    <div class="form-group">
+                        <label class="col-sm-2">网站名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="title" placeholder="请输入网站名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">关键字：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="keyword" placeholder="请输入网站关键字">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">网站描述：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="description" placeholder="请输入网站描述">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">网站LOGO：</label>
+                        <div class="col-sm-8">
+                            <{tmdTag:upimg name='logo' /}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">版权信息：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="copyright" placeholder="请输入版权信息">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">备案号：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="beian" placeholder="请输入备案号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">统计代码：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="tongji" placeholder="请输入统计代码">
+                        </div>
+                    </div>
+                    
+            </div>
+            <!--附件设置-->
+            <div class="tab-pane" id="tabCar">
+                <div class="form-group">
+                    <label class="col-sm-2">上传类型：</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="uptype" style="width: 100%">
+                            <option value="1">本地上传</option>
+                            <option value="2">七牛上传</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2">AK：</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="upak" placeholder="">
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-sm-2">SK：</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="upsk" placeholder="">
+                    </div>
+                </div> 
+                
+                <div class="form-group">
+                            <label class="col-sm-2">附件大小：</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="filesize" placeholder="请输入最大上传大小">
+                                    <span class="input-group-addon">M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2">附件格式：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="filetype" placeholder="请输入附件格式">
+                            </div>
+                        </div>
+                  
+
+            </div>
+            <!--微信设置-->
+            <div class="tab-pane" id="tabWechat">
+
+                    
+                        <div class="form-group">
+                            <label class="col-sm-2">开发者ID：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="wx_appid" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2">开发者密码：</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="wx_appsecret" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2">ACCESSTOKEN：</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" value="{$list.accesstoken}" disabled>
+                            </div>
+                            <label class="col-sm-1">过期时间：</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" value="<?php echo date('Y-m-d h:i:s',$list['extime']); ?>" disabled>
+                            </div>
+                        </div>
+                  
+
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="hidden" name="id">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+                
+        </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('#editForm').myForm();
+    // <?php if ($list) { ?> //
+    var list = <?=json_encode($list, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(list);
+    // <?php } ?> //
+</script>

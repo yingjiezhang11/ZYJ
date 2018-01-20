@@ -1,0 +1,148 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>公交路线展示工具</title>
+    <style type="text/css">
+        html,
+        body{
+            height: 100%;
+        }
+        body{
+            margin: 0;
+            font-size: 14px;
+        }
+        #tmdMap{
+            height: 100%;
+        }
+        #tmdSet{
+            position: absolute;
+            right: 0;
+            top: 60px;
+            width: 100px;
+            background: #fff;
+            border-top: solid 1px;
+            border-left: solid 1px;
+            border-bottom: solid 1px;
+            padding: 10px;
+
+        }
+        #tmdSet label{
+            margin-bottom: 10px;
+            display: block;
+        }
+        #tmdSet input,
+        #tmdSet select
+        {
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=IgnZ4taUjaliYvT1wIFX7mi2"></script>
+</head>
+<body>
+<div id="tmdMap"></div>
+<div id="tmdSet">
+    <label>
+        公交线路
+        <input type="text" value="11" id="busList" style="font-size: 20px;">
+    </label>
+    <label>
+        上下行
+        <select id="busListItem">
+            <option value="0">上行</option>
+            <option value="1">下行</option>
+        </select>
+    </label>
+    <label>
+        线的颜色
+        <input type="color" id="strokeColor" value="#FF0000">
+    </label>
+    <label>
+        线的宽度
+        <input type="number" id="strokeWeight" min="1" value="7">
+    </label>
+    <label>
+        线的透明度
+        <input type="number" id="strokeOpacity" step="0.1" value="0.7">
+    </label>
+    <label>
+        线的样式
+        <select id="strokeStyle">
+            <option value="solid">实线</option>
+            <option value="dashed">虚线</option>
+        </select>
+    </label>
+    <button id="busListBtn">新增</button>
+</div>
+
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("tmdMap");            // 创建Map实例
+    map.centerAndZoom('福州');
+    map.enableScrollWheelZoom();
+    map.enableKeyboard();
+    map.enableInertialDragging();
+
+
+    map.addControl(new BMap.CityListControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT
+    }));
+    map.addControl(new BMap.MapTypeControl({
+        anchor: BMAP_ANCHOR_TOP_RIGHT
+    }));
+    map.addControl(new BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        offset: new BMap.Size(-10, 30),
+        enableGeolocation: true
+    }));
+
+    var myIcon = new BMap.Icon("http://api0.map.bdimg.com/images/stop_icon.png", new BMap.Size(11,11));
+
+    var ele = function (id) {
+        return document.getElementById(id);
+    };
+    var getPolylineOptions = function () {
+        return {
+            strokeColor: ele('strokeColor').value,
+            strokeWeight: ele('strokeWeight').value,
+            strokeOpacity: ele('strokeOpacity').value,
+            strokeStyle: ele('strokeStyle').value
+        }
+    };
+
+    var bus = new BMap.BusLineSearch(map, {
+        onGetBusListComplete: function(result){
+            var busListItem = ele('busListItem').value;
+            var fstLine = result.getBusListItem(busListItem);//获取第一个公交列表显示到map上
+            bus.getBusLine(fstLine);
+        },
+        onGetBusLineComplete: function (busline) {
+            var polyline = new BMap.Polyline(busline.getPath(), getPolylineOptions());
+            map.addOverlay(polyline);
+
+            var num = busline.getNumBusStations();
+            for (var i=0; i<num; i++) {
+                var busStation = busline.getBusStation(i);
+
+                var marker = new BMap.Marker(busStation.position, {icon:myIcon});
+                map.addOverlay(marker);
+
+                if (i===0) {
+                    var label = new BMap.Label(busline.name, {position: busStation.position});
+                    map.addOverlay(label);
+                }
+
+//                var label = new BMap.Label(busStation.name, {position: busStation.position});
+//                map.addOverlay(label);
+            }
+        }
+    });
+
+
+    ele('busListBtn').addEventListener('click', function () {
+
+        bus.getBusList(ele('busList').value);
+    });
+
+</script>
+</body>
+</html>

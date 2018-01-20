@@ -1,0 +1,146 @@
+                <form class="form-horizontal" method="post" id="editForm" action="{:request()->url()}">
+                    <?php $wxuser= \app\weixin\model\WxUser::get($list['wxid']); ?>
+                    <div class="form-group">
+                        <label class="col-sm-2">微信昵称：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" value="{$wxuser.nickname}" disabled>
+                        </div>
+                        <label class="col-sm-2">联系姓名：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" value="{$wxuser.realname}" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">所属公司：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" value="{$wxuser.company}" disabled>
+                        </div>
+                        <label class="col-sm-2">联系电话：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" value="{$wxuser.mobile}" disabled>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-1">类型</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="type">
+                        </div>
+                        <label class="col-sm-1">昵称</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="nicheng">
+                        </div>
+                        <label class="col-sm-1">姓名</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="xingming">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">性别</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="xingbie">
+                        </div>
+                        <label class="col-sm-1">年龄</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="nianling">
+                        </div>
+                        <label class="col-sm-1">职业</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="zhiye">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">身高</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="shengao">
+                        </div>
+                        <label class="col-sm-1">体重</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="tizhong">
+                        </div>
+                        <label class="col-sm-1">三围</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="sanwei">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">手机</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="shouji">
+                        </div>
+                        <label class="col-sm-1">QQ</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="qq">
+                        </div>
+                        <label class="col-sm-1">微信</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="weixin">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">价格</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="jiage">
+                        </div>
+                        <label class="col-sm-1">联系</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="lianxi">
+                        </div>
+                        <label class="col-sm-1">电话</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="lianxiphone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">dizhi</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="sheng">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="shi">
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="dizhi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1">状态</label>
+                        <div class="col-sm-3">
+                            <select name="status" class="mySelect" style="width: 100%">
+                                <option value="99"<?php if($list['status']=='99'){echo " selected";} ?>>审核通过</option>
+                                <option value="88"<?php if($list['status']=='88'){echo " selected";} ?>>待审核</option>
+                                <option value="0"<?php if($list['status']=='0'){echo " selected";} ?>>拒绝用户</option>
+                            </select>
+
+                        </div>
+                        <label class="col-sm-1">添加</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" value="{$list.addtime}" disabled>
+                        </div>
+                        <label class="col-sm-1">更新</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" value="{$list.updatetime}" disabled>
+                        </div>
+                    </div>
+     
+               
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="hidden" class="form-control" name="id">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+
+                </form>
+
+<script>pageInit();</script>
+<script>
+    $('#editForm').myForm();
+    
+    // <?php if ($list) { ?> //
+    var list = <?=json_encode($list, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(list);
+    // <?php } ?> //
+
+</script>

@@ -1,0 +1,130 @@
+<div class="panel">
+    <?php if($cid = input('get.cid')){
+        $wz= \app\admin\model\Column::where('id',$cid)->find();
+    }else{
+        $wz['cname']='文章管理';
+    }
+    ?>
+    <div class="panel-heading">
+        {$wz.cname}
+    </div>
+
+    <!--栏目-->
+    <div class="panel-body col-lg-2">
+        <div class="row">
+            <ul class="tree tree-lines tree-menu tree-chevrons" data-ride="tree">
+                <?php $column= \app\admin\model\Column::where(['pid'=>'0','type'=>'2'])->select(); ?>
+                <?php foreach ($column as $i => $c) { ?>
+                <?php $pcolumn= \app\admin\model\Column::where('pid',$c['id'])->select();if($pcolumn){ ?>
+                <li class="open"><a href="#">{$c.cname}</a>
+                    <ul>
+                        <?php foreach ($pcolumn as $i => $p) { ?>
+                        <li><a href="{:url('page/index')}?cid={$p.id}">{$p.cname}</a></li>
+                        <?php } ?>
+                    </ul>
+                    <?php }else{ ?>
+                <li class="open"><a href="{:url('page/index')}?cid={$c.id}">{$c.cname}</a>
+                <?php } ?> 
+                </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+
+    <!--列表-->
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-10">
+                <?php if ($editData) { ?>
+                <form class="form-horizontal" method="post" id="editForm">
+
+                    <div class="form-group">
+                        <label class="col-sm-2">标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="title" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">英文标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="title_en" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2">所属栏目：</label>
+                        <div class="col-sm-4">
+                            <select name="cid" class="mySelect" style="width: 100%">
+                                <?= \app\admin\model\Column::option_page(input('get.cid'))?>
+                            </select>
+                        </div>
+                        <label class="col-sm-2">缩略图：</label>
+                        <div class="col-sm-4">
+                            <{tmdTag:upimg name='image' /}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">关键字：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="keyword">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2">网站描述：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="description">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2">网站内容：</label>
+                        <div class="col-sm-10">
+                            <{tmdTag:editor name="content" /}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">英文版：</label>
+                        <div class="col-sm-10">
+                            <{tmdTag:editor name="content_en" /}>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2">排序：</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="listorder">
+                        </div>
+                        <label class="col-sm-2">模板：</label>
+                        <div class="col-sm-2">
+                <input type="text" class="form-control" name="templates"<?php if(!input('cid')){?> value="show"<?php }?>>
+                        </div>
+                        <label class="col-sm-2">状态：</label>
+                        <div class="col-sm-2">
+                            <{tmdTag:select name="status" optname="article_status" /}>
+                        </div>
+                    </div>
+                    
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="hidden" name="id">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+
+                </form>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#editForm').myForm();
+    
+    // <?php if ($editData) { ?> //
+    var editData = <?=json_encode($editData, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(editData);
+    // <?php } ?> //
+
+</script>

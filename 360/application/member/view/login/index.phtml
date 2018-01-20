@@ -1,0 +1,123 @@
+{__NOLAYOUT__}<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>UT科技</title>
+<meta name="description" content="login page">
+<meta name="keywords" content="index">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--styles-->
+<link href="__INDEX__/login/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="__INDEX__/login/css/font-awesome.min.css" rel="stylesheet">
+<link href="__INDEX__/login/css/amazeui.min.css" rel="stylesheet" type="text/css">
+<link href="__INDEX__/login/css/admin.css" rel="stylesheet" type="text/css">
+<link href="__INDEX__/login/css/app.css" rel="stylesheet" type="text/css">
+<link href="__INDEX__/login/css/loginstyle.css" rel="stylesheet" type="text/css">
+
+
+<script type="text/javascript">
+    function disp_alert()
+    {
+        alert("报名已截止！");
+    }
+</script>
+
+<!--/styles-->
+</head>
+<body>
+<div class="bg-blur" style="background:url(__INDEX__/login/imgs/bg.jpg)"></div>
+ <div class="am-g myapp-login">
+    <div class="xa-center">
+     <!--系统版本信息-->
+     <div id="contentA" class="contentA">
+        <!--<div class="xa-login-ver">
+            XXXXXXXXXXXXXX系统2.0
+        </div>-->
+        <div style="width: 100%;height: 25%;"></div>
+        <div style="width: 9%;height: 75%;float: left;"></div>
+        <div class="xa-login-content" style="float: left; width: 75%;">
+           
+           <div class="xa-login-contentA" style="padding-top: 10px;">
+            <p>UT企业信息管理系统</p>
+            <!--<span>浙江农林大学</span>-->
+           </div>
+
+           <div class="xa-border"></div>
+           <!--登陆页消息-->
+          <!-- <div class="xa-login-cententB">
+           <div class="xa-login-news">
+                <ul class="xa-login-list">
+                    <li><a href="#">
+                        <p>
+                        <!--<span class="xa-time">【2017.10.10】</span>-->
+                     <!--   <span class="xa-new" style="color: #eee;">浙江省第一届大学生环境生态科技创新大赛由浙江省土壤肥料学会主办、浙江农林大学承办。大赛作品分为科技理念作品和科技实物作品两类：科技理念作品应该是围绕主题的一种创意、理念、产品的虚拟概念设计，也可以论文的形式提交；科技实物作品必须以实物或者软件的形式提交。各本科院校、独立学院、高职高专参赛队伍数量不限，每支参赛队4-5名队员。</span></p>
+                        <!--<div class="xa-more">详情</div>--></a>
+                   <!-- </li>
+                    <li><a href="#" style="color: #eee;">
+                        <p>
+                        <span class="xa-time">【大赛起止时间】</span>
+                        <span class="xa-new">2017年11月15日至2018年6月30日</span></p>
+                        <!--<div class="xa-more">详情</div>--></a>
+                   <!-- </li>
+                  
+                </ul>
+            </div>
+           </div>
+           <!--/登陆页消息-->
+        </div>
+     </div>
+     <!--/系统版本信息-->
+     <!--登录框-->
+     <div id="contentB" class="contentB">
+         <div class="xa-kongge" ></div>
+         <div class="myapp-login-logo-text">
+             <!--移动端标题-->
+             <p class="xa-loginM-title">欢迎使用UT企业信息管理系统</p>
+             <!--PC标题-->
+             <div class="xa-login-logo-text">用户登录</div>
+             <!--<div class="login-font"></div>--><!--添加系统副标题，可选-->
+             <div class="am-u-sm-12 login-am-center xa-login-center">
+                <form class="am-form "  name="loginform" accept-charset="utf-8" id="login_form" method="post"><input type="hidden" name="did" value="0"/>
+                    <!--用户名-->
+                    <div class="am-form-group xa-am-form">
+                        <input class="xa-first-child" type="text" id="" name="username" placeholder="用户名">
+                    </div>
+                    <!--密码-->
+                    <div class="am-form-group xa-login-mima xa-am-form">
+                        <input class="" type="password" id="" name="password" placeholder="密码">
+                    </div>
+                    <!--验证码--><!-- 
+                    <div class="am-form-group xa-am-form">
+                        <input class="" type="text" id="" name="code" placeholder="验证码，点击图片刷新">
+                        <img class="xa-login-yzmB" src="{:captcha_src()}" onclick="this.src='{:captcha_src()}?'+Math.random();" width="100"  alt="captcha" />   
+                    </div> -->
+                    <!--登录按钮-->
+                    <button class="am-btn am-btn-default" type="submit">登&nbsp;&nbsp;&nbsp;录</button> 
+                </form>
+                <div >
+                    <!--<a href="#" style="float: left;">忘记密码 ?</a>-->
+                    <span style="float: right;">没有账号？{if(strtotime($bmdeadline.value) > time())}<a href="{:url('register')}" style="color: #fff;">点击注册</a>{else}<a onClick="disp_alert()">点击注册</a>{/if}</span>
+                    <!--<span style="float: right;">没有账号？<a href="#">点击注册</a></span>-->
+                </div>
+                <!--<div class="xa-border xa-border-tz"></div>-->
+             </div>
+             
+         </div>
+         <div class="login-font"></div>
+         <div class="am-u-sm-10 login-am-center"></div>
+     </div>
+     <!--/登录框-->
+     </div>
+ </div>
+
+ <script src="__INDEX__/login/jquery.js"></script>
+    <script src="__INDEX__/login/bootstrap.js"></script>
+    <script src="__INDEX__/login/jquery_002.js"></script>
+    <!--Beyond Scripts-->
+    <script src="__INDEX__/login/beyond.js"></script>
+
+</body>
+</html>

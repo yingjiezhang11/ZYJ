@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="__INDEX__/layui/css/layui.css"  media="all">
+<div class="panel">
+    <div class="panel-heading">
+        采购入库
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-10">
+                <form class="form-horizontal" action="{:request()->url()}" method="post" id="editForm">
+                    <div class="form-group">
+                        <label for="title" class="col-sm-2">订单编号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" id="title" placeholder="" name="orderid">
+                        </div>
+
+                    </div>
+                    <div class="form-group parent" data-id="1">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-2">
+                                    <label>产品名称</label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>采购价格</label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>采购数量</label>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>添加条目</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="firstRow">
+                            <div class="form-group">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-2">
+                                    <select name="pid[]" style="width: 100%" class="mySelect">
+                                        <option value=""></option>
+                                        <?= \app\member\model\StockProduct::option()?>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="text" class="form-control" placeholder="" name="buying_price[]" value="0.00"> 
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="number" class="form-control" placeholder="" name="amount[]" value="0">
+                                </div>
+                                <div class="col-sm-2">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info clone" href="javascript:;">新增一行</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="hidden" name="aid" value="{$aid}"/>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var rowHtml = '<div class="row">' + $('#firstRow').html() + '</div>';
+    $(function(){
+        $('#editForm').myForm();
+        <?php if ($one) { ?>
+        var oneData = <?=json_encode($one, JSON_UNESCAPED_UNICODE)?>;
+        $('#editForm').myFormData(oneData);
+        <?php } ?>
+        pageInit();
+
+        var parent = $('.parent');
+        parent.on('click','.clone',function(e){
+            e.preventDefault();
+            // var html = "<div class='row'>"+$(this).closest('.row').html()+"</div>";
+            parent.append(rowHtml);
+            pageInit();
+        });
+        
+        $(document).on('change', '.project_id', function () {
+            var txt = $(this).find('option:checked').text();
+            $(this).next().val(txt);
+        })
+        
+    });
+</script>
+

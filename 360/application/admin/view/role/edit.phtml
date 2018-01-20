@@ -1,0 +1,219 @@
+<link rel="stylesheet" href="__INDEX__/jquery-treegrid/css/jquery.treegrid.css">
+<script src="__INDEX__/jquery-treegrid/js/jquery.treegrid.min.js"></script>
+<div class="panel">
+    <div class="panel-heading">
+        角色
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" method="post" id="editForm">
+            <div class="form-group">
+                <label class="col-sm-2">角色名称</label>
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <input type="text" class="form-control" name="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2">备注</label>
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <input type="text" class="form-control" name="remark">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2">排序</label>
+                <div class="col-sm-4 col-md-3 col-lg-2">
+                    <input type="text" class="form-control" name="sort">
+                </div>
+                <label class="col-sm-2">类别</label>
+                <div class="col-sm-4 col-md-3 col-lg-2">
+                    <{tmdTag:select name="type" optname="role_type" /}>
+                </div>
+            </div>
+            <?php if($editData['type']=='0'){?>
+            <div class="form-group">
+                <label class="col-sm-2">权限</label>
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <table class="tree table table-bordered table-condensed">
+                        <?php
+                        $menu_data = config('menu_data');
+                        foreach ($menu_data as $k1 => $r1) {
+                            if ($taocanAuth and !in_array($k1, $taocanAuth)) {
+                                continue;
+                            }
+                            ?>
+                            <tr class="treegrid-{$k1}">
+                                <td><label><input type="checkbox" name="auth[]" value="{$k1}"> {$r1.text}</label></td>
+                                <td><!-- {$k1} --></td>
+                            </tr>
+
+                            <?php
+                            if ($r1['auth']) {
+                                foreach ($r1['auth'] as $a1 => $a2) {
+                                    $a1 = "$k1-auth-$a1";
+                                    ?>
+                                    <tr class="success treegrid-{$a1} treegrid-parent-{$k1}">
+                                        <td><label><input type="checkbox" name="auth[]" value="{$a1}"> {$a2}</label></td>
+                                        <td>权限<!-- {$a1} --></td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+
+                            <?php
+                            if ($r1['children']) {
+                                foreach ($r1['children'] as $k2 => $r2) {
+                                    $k2 = "$k1-$k2";
+
+                                    if ($taocanAuth and !in_array($k2, $taocanAuth)) {
+                                        continue;
+                                    }
+                                    ?>
+                                    <tr class="treegrid-{$k2} treegrid-parent-{$k1}">
+                                        <td><label><input type="checkbox" name="auth[]" value="{$k2}"> {$r2.text}</label></td>
+                                        <td><!-- {$k2} --></td>
+                                    </tr>
+
+                                    <?php
+                                    if ($r2['auth']) {
+                                        foreach ($r2['auth'] as $b1 => $b2) {
+                                            $b1 = "$k2-auth-$b1";
+                                            ?>
+                                            <tr class="success treegrid-{$b1} treegrid-parent-{$k2}">
+                                                <td><label><input type="checkbox" name="auth[]" value="{$b1}"> {$b2}</label></td>
+                                                <td>权限<!-- {$b1} --></td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
+                                    <?php
+                                }
+                            }
+                            ?>
+                            <?php
+                        }
+                        ?>
+                      
+                    </table>
+                </div>
+            </div>
+            <?php }elseif($editData['type']=='1'){?>
+            <div class="form-group">
+                <label class="col-sm-2">权限</label>
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <table class="tree table table-bordered table-condensed">
+                        <?php
+                        $menu_data = config('member_data');
+                        foreach ($menu_data as $k1 => $r1) {
+                            if ($taocanAuth and !in_array($k1, $taocanAuth)) {
+                                continue;
+                            }
+                            ?>
+                            <tr class="treegrid-{$k1}">
+                                <td><label><input type="checkbox" name="auth[]" value="{$k1}"> {$r1.text}</label></td>
+                                <td><!-- {$k1} --></td>
+                            </tr>
+
+                            <?php
+                            if ($r1['auth']) {
+                                foreach ($r1['auth'] as $a1 => $a2) {
+                                    $a1 = "$k1-auth-$a1";
+                                    ?>
+                                    <tr class="success treegrid-{$a1} treegrid-parent-{$k1}">
+                                        <td><label><input type="checkbox" name="auth[]" value="{$a1}"> {$a2}</label></td>
+                                        <td>权限<!-- {$a1} --></td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+
+                            <?php
+                            if ($r1['children']) {
+                                foreach ($r1['children'] as $k2 => $r2) {
+                                    $k2 = "$k1-$k2";
+
+                                    if ($taocanAuth and !in_array($k2, $taocanAuth)) {
+                                        continue;
+                                    }
+                                    ?>
+                                    <tr class="treegrid-{$k2} treegrid-parent-{$k1}">
+                                        <td><label><input type="checkbox" name="auth[]" value="{$k2}"> {$r2.text}</label></td>
+                                        <td><!-- {$k2} --></td>
+                                    </tr>
+
+                                    <?php
+                                    if ($r2['auth']) {
+                                        foreach ($r2['auth'] as $b1 => $b2) {
+                                            $b1 = "$k2-auth-$b1";
+                                            ?>
+                                            <tr class="success treegrid-{$b1} treegrid-parent-{$k2}">
+                                                <td><label><input type="checkbox" name="auth[]" value="{$b1}"> {$b2}</label></td>
+                                                <td>权限<!-- {$b1} --></td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
+                                    <?php
+                                }
+                            }
+                            ?>
+                            <?php
+                        }
+                        ?>
+                      
+                    </table>
+                </div>
+            </div>
+            <?php }?>
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <button type="button" class="btn btn-default" id="checkAllBtn">全选</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    my.menuActive('role/index');
+
+    $('.tree').treegrid();
+
+    $('#editForm').myForm();
+
+    // <?php if ($editData) { ?> //
+    var editData = <?=json_encode($editData, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(editData);
+    // <?php } ?> //
+
+    var checkAll = true;
+    var checkAllEle = $(':checkbox[name="auth[]"]');
+    $('#checkAllBtn').on('click', function (e) {
+        checkAllEle.prop('checked', checkAll);
+        checkAll = !checkAll;
+    });
+
+    checkAllEle.on('click', function (e) {
+        var self = $(this);
+        var isCkd = self.prop('checked');
+        var value = self.val();
+        var str = '';
+//        console.log(isCkd, value);
+
+        if (value.indexOf('-')>=0) { // 子菜单
+            if (isCkd) {
+                str = value.split('-')[0];
+                str = '[value="' + str + '"]';
+                checkAllEle.filter(str).prop('checked', isCkd);
+            }
+        }else{ // 父菜单
+            str = '[value^="' + value + '-"]';
+            checkAllEle.filter(str).prop('checked', isCkd);
+        }
+    });
+</script>

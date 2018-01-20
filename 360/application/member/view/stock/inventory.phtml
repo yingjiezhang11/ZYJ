@@ -1,0 +1,62 @@
+
+<div class="panel">
+    <div class="panel-heading">
+        库存管理
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('add_inventory')}"><i class="icon icon-plus"></i> 新建盘点</button>
+            </div>
+            <div class="col-sm-8 mySearch">
+                <form class="form-inline" id="searchForm" action="{:request()->url()}">
+                    <div class="form-group">
+                        <label>关键字：</label>
+                        <input type="text" class="form-control" placeholder="名字" name="kw">
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+                <script>
+                    $('#searchForm').myFormData(<?= json_encode(input('get.'), JSON_UNESCAPED_UNICODE) ?>);
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>盘点日期</th>
+                <th>盘点用户</th>
+                <th>监督用户</th>
+                <th>盘点备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.addtime}</td>
+                    <?php $u= \app\member\model\Member::id2name($row['userid']);?>
+                    <td>{$u}</td>
+                    <?php $u= \app\member\model\Member::id2name($row['jiandu']);?>
+                    <td>{$u}</td>
+                    <td>{$row.remark}</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{:url('show_inventory')}?id={$row.id}">盘点</a>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('show_storage')}?id={$row.id}">查看盘点报告</button>
+                    </td>
+                </tr>
+                <?php
+                }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{$list->render()}

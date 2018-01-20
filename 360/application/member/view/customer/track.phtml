@@ -1,0 +1,103 @@
+<div class="panel">
+    <div class="panel-heading">
+        客户跟踪记录
+    </div>
+    
+    <div class="panel-body">
+        <?php if(input('get.id')){ $row= \app\member\model\Customer::where('id',input('get.id'))->find();?>
+        <!--table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>电话</th>
+                <th>区域</th>
+                <th>类型</th>
+                <th>来源</th>
+                <th>状态</th>
+                <th>时间</th>
+                <th>业务员</th>
+                <th>客服</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{$row.company}</td>
+                    <td>{$row.mobile}</td>
+                    <td>{$row.province}-{$row.city}</td>
+                    <td><?php echo \my::selectText('customer_type',$row['type']) ?></td>
+                    <td><?php echo \my::selectText('customer_comefrom',$row['comefrom']) ?></td>
+                    <td><?php echo \my::selectText('customer_status',$row['status']) ?></td>
+                    <td>{$row.addtime}</td>
+                    <td><?php $u= \app\member\model\Member::where('uid',$row['sales'])->find();?>{$u.realname}</td>
+                    <td><?php $u= \app\member\model\Member::where('uid',$row['service'])->find();?>{$u.realname}</td>
+                </tr>
+            </tbody>
+        </table-->
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('customer/track_add')}?id={$row.id}"><i class="icon icon-plus"></i>添加跟踪记录</button>
+            </div>
+        </div>
+        <?php } ?>
+        
+    </div>
+    <!--客户资料-->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>客户名称</th>
+                <th>客户电话</th>
+                <th>客户微信</th>
+                <th>客户状态</th>
+                <th>客户地址</th>
+            </tr>
+            </thead>
+            <tbody>                
+                <tr>
+                    <td>{$customer.company}</td>
+                    <td>{$customer.mobile} / {$customer.mobile2}</td>
+                    <td>{$customer.weixin}</td>
+                    <td><?php echo \my::selectText('customer_status',$customer['status']) ?></td>
+                    <td>{$customer.province}-{$customer.city}</td>
+                    <td>{$customer.remark}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--列表-->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>跟踪时间</th>
+                <th>跟踪人员</th>
+                <th>跟踪方式</th>
+                <th>对接人员</th>
+                <th>对接情况</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $i => $row) { ?>
+                
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.addtime}</td>
+                    <td><?php $u= \app\member\model\Member::where('uid',$row['userid'])->find();?>{$u.realname}</td>
+                    <td><?php echo \my::selectText('track_type',$row['type']) ?></td>
+                    <td>{$row.linkman}</td>
+                    <td>{$row.remark}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('track_edit')}?id={$row.id}">修改</button>
+                        <a href="{:url('track_delete')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

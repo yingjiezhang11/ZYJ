@@ -1,0 +1,69 @@
+
+<!--<link rel="stylesheet" href="__INDEX__/pure/grids-responsive-min.css">-->
+
+<script src="__INDEX__/distpicker.min.js"></script>
+
+<div class="panel ">
+    <div class="panel-heading">
+        门店
+    </div>
+    <div class="panel-body">
+        <form method="post" id="editForm" action="{:request()->url()}" >
+            <div class="pure-g">
+                <div class="form-group sm-1 md-1-2 lg-1-3">
+                    <label>公司名称：</label>
+                    <input type="text" class="form-control" name="name">
+                </div>
+                <div class="form-group sm-1 md-1-2 lg-1-3">
+                    <label>公司电话：</label>
+                    <input type="text" class="form-control" name="mobile">
+                </div>
+                <div class="form-group sm-1 md-1-2 lg-1-3">
+                    <label>公司LOGO：</label>
+                    <{tmdTag:upimgmember name='logo' /}>
+                </div>            
+                <div class="form-group sm-1 md-1-2 lg-1-3">
+                    <label>地区：</label>
+                    <div class="pure-g" data-toggle="distpicker">
+                        <select class="form-control sm-1-3 md-1-3" name="province"
+                                data-province="<?= $editData['province'] ?: '' ?>">
+                        </select>
+                        <select class="form-control sm-1-3 md-1-3" name="city"
+                                data-city="<?= $editData['city'] ?: '' ?>">
+                        </select>
+                        <select class="form-control sm-1-3 md-1-3" name="area"
+                                data-district="<?= $editData['area'] ?: '' ?>">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group sm-1 md-1-2 lg-1-3">
+                    <label>详细地址：</label>
+                    <input type="text" class="form-control" name="address">
+                </div>
+                <div class="form-group sm-1 md-1-2 lg-1-3">
+                    <label>坐标：</label>
+                    <{tmdTag:map namej='map_lng' namew='map_lat' /}>
+                </div>
+
+                <div class="form-group sm-1 md-1-1 lg-1-1">
+                    <label>公司介绍：</label>
+                    <{tmdTag:editor name="remark" /}>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="shopSaveBtn">保存</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+    $('#editForm').myForm();
+
+    // <?php if ($editData) { ?> //
+    var editData = <?=json_encode($editData, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(editData);
+    // <?php } ?> //
+</script>

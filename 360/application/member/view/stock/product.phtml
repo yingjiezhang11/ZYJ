@@ -1,0 +1,67 @@
+
+<div class="panel">
+    <div class="panel-heading">
+        员工
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-remote="{:url('add_product')}"><i class="icon icon-plus"></i> 添加产品</button>
+            </div>
+            <div class="col-sm-8 mySearch">
+                <form class="form-inline" id="searchForm" action="{:request()->url()}">
+                    <div class="form-group">
+                        <label>关键字：</label>
+                        <input type="text" class="form-control" placeholder="名字" name="kw">
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+                <script>
+                    $('#searchForm').myFormData(<?= json_encode(input('get.'), JSON_UNESCAPED_UNICODE) ?>);
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>产品编码</th>
+                <th>名称</th>
+                <th>规格</th>
+                <th>分类</th>
+                <th>销售价</th>
+                <th>状态</th>
+                <th>数量</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.sn}</td>
+                    <td>{$row.pname}</td>
+                    <td>{$row.spec}</td>
+                    <?php $fl= \app\member\model\StockSet::where('id',$row['fid'])->find(); ?>
+                    <td>{$fl.cname}</td>
+                    <td>{$row.selling_price}</td>
+                    <td><?php echo \my::selectText('product_status',$row['status']) ?></td>
+                    <td>{$row.amount}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('edit_product')}?id={$row.id}">修改</button>
+                        <a href="{:url('delete_product')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{$list->render()}

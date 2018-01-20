@@ -1,0 +1,36 @@
+<div class="panel">
+    <div class="panel-heading">
+        日志管理
+    </div>
+
+    <div class="table-responsive" style="margin-top: 10px">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>模型</th>
+                <th>控制器</th>
+                <th>方法</th>
+                <th>参数</th>
+                <th>操作用户</th>
+                <th>操作时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $i => $row) { ?>
+                <?php $u=\app\admin\model\User::get($row['userid']); ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.app}</td>
+                    <td>{$row.controller}</td>
+                    <td>{$row.action}</td>
+                    <td>{$row.data}</td>
+                    <td>{$u.username}[{$u.realname}]</td>
+                    <td>{$row.addtime}</td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

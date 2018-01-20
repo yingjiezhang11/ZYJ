@@ -1,0 +1,40 @@
+<div class="panel">
+    <div class="panel-heading">
+        附件管理
+    </div>
+
+    <div class="table-responsive" style="margin-top: 10px">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>缩略图</th>
+                <th>附件地址</th>
+                <th>附件大小</th>
+                <th>附件类型</th>
+                <th>上传日期</th>
+                <th>操作用户</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $i => $row) { ?>
+                <?php $u=\app\admin\model\User::get($row['userid']); $files=config('upload.url'); ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <td><img data-toggle="lightbox" src="{$files}{$row.filename}" data-image="{$files}{$row.filename}" data-caption="小图看大图" class="img-thumbnail" alt="" width="60" height='60'></td>
+                    <td>{$row.filename}</td>
+                    <td>{$row.filesize}</td>
+                    <td>{$row.filetype}</td>
+                    <td>{$row.addtime}</td>
+                    <td>{$u.username}[{$u.realname}]</td>
+                    <td>
+                        <a href="{:url('System/delete')}?id={$row.id}" class="btn btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

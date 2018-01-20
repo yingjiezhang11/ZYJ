@@ -1,0 +1,59 @@
+<div class="panel">
+    <div class="panel-heading">
+        客户基本资料
+    </div>
+    
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <a class="btn btn-primary" href="{:url('Sales/add')}"><i class="icon icon-plus"></i> 新增售订单</a>
+            </div>
+
+        </div>
+    </div>
+    <!--列表-->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>订单编号</th>
+                <th>客户</th>
+                <th>开单时间</th>
+                <th>数量</th>
+                <th>金额</th>
+                <th>付款方式</th>
+                <th>订单状态</th>
+                <th>开单员</th>
+                <th>业务员</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($list as $i => $row) { ?>
+                
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.order_sn}</td>
+                    <td><?php $username= \app\member\model\Customer::get($row['cid']);?>{$username.company}</td>
+                    <td>{$row.billtime}</td>
+                    <td>{$row.total_quantity}</td>
+                    <td>￥ {$row.total_money} 元</td>
+                    <td><?php echo \my::selectText('payment',$row['payment']); ?></td>
+                    <td><?php echo \my::selectText('order_status',$row['status']); ?></td>
+                    <td><?php $u= \app\member\model\Member::get($row['userid']);?>{$u.realname}</td>
+                    <td><?php $u= \app\member\model\Member::get($row['sales']);?>{$u.realname}</td>
+                    <td>{$row.remark}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('show')}?id={$row.id}"><i class="icon icon-columns"></i> 详情</button>
+                        <a class="btn btn-sm btn-primary" href="{:url('edit')}?id={$row.id}"><i class="icon icon-edit"></i> 修改</a>
+                        <a href="{:url('delete')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete"><i class="icon icon-trash"></i> 删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

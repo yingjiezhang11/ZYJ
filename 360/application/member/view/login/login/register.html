@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>浙江省大学生环境生态科技创新大赛</title>
+<meta name="description" content="这是一个 index 页面">
+<meta name="keywords" content="index">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="icon" type="image/png" href="__INDEX__//i/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="__INDEX__//i/app-icon72x72@2x.png">
+<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+<link rel="stylesheet" href="__INDEX__/css/bootstrap.css" />
+<link rel="stylesheet" href="__INDEX__/css/amazeui.min.css" />
+<link rel="stylesheet" href="__INDEX__/css/admin.css">
+<link rel="stylesheet" href="__INDEX__/css/app.css">
+<link rel="stylesheet" href="__INDEX__/font-awesome.css" >
+<link rel="stylesheet" href="__INDEX__/css/style.css">
+<script src="__INDEX__/js/echarts.min.js"></script>
+</head>
+
+<body data-type="index">
+
+   
+<header class="am-topbar am-topbar-inverse admin-header">
+  <div class="am-topbar-brand"> <span  class="nav-titlle">浙江省大学生环境生态科技创新大赛
+</span> </div>
+  
+  <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+    <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+
+      <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle> <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">  </a>
+
+      </li>
+
+      
+     
+      
+    
+    </ul> 
+  </div>
+</header>
+
+   <div class="tpl-page-container tpl-page-header-fixed">
+    <!--引用侧边栏-->
+<!--     {include file="public/left"}  -->
+    <!--/引用侧边栏-->
+
+
+
+        <div class="tpl-content-wrapper xa-tpl-content-wrapper" style="padding: 0;">
+            
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        用户注册
+                    </div>
+                  
+
+
+                </div>
+                <div class="tpl-block ">
+
+                    <div class="am-g tpl-amazeui-form">
+
+
+                        <div class="am-u-sm-12 am-u-md-9">
+                            <form class="am-form am-form-horizontal" method="post">
+                                
+                                 <div class="am-form-group xa-sm-am-form-group">
+                                    <label for="user-name" class="am-u-md-3 am-u-sm-12 am-form-label">用户名</label>
+                                    <div class="am-u-md-9 am-u-sm-12">
+                                        <input type="text" name="name1" id="user-name" placeholder="设置后不可更改，中英文均可">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+                                 <div class="am-form-group xa-sm-am-form-group">
+                                    <label for="project-name" class="am-u-md-3 am-u-sm-12 am-form-label">密码</label>
+                                    <div class="am-u-md-9 am-u-sm-12">
+                                        <input type="password" name="password" id="password-name" maxlength="16" placeholder="长度4~16个字符，支持大小写字母，不可有空格  ">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+                                <div class="am-form-group xa-sm-am-form-group">
+                                    <label for="project-name" class="am-u-md-3 am-u-sm-12 am-form-label">确认密码</label>
+                                    <div class="am-u-md-9 am-u-sm-12 ">
+                                        <input type="password" name="password1" id="password-name" maxlength="16" placeholder="请再次输入密码">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+                                <div class="am-form-group xa-sm-am-form-group">
+                                    <label for="team-name" class="am-u-md-3 am-u-sm-12 am-form-label">团队名称</label>
+                                    <div class="am-u-md-9 am-u-sm-12">
+                                        <input type="text" name="name2" id="team-name" placeholder="请输入团队名称">
+<!--                                        <small>输入你的名字，让我们记住你。</small>-->
+                                    </div>
+                                </div>
+                         
+                           
+                              
+                                     <div class="am-form-group xa-sm-am-form-group">
+                                    <label for="place" class="am-u-md-3 am-u-sm-12 am-form-label">所在学校</label>
+                                     <div class="am-u-md-9 am-u-sm-12">
+                                     <select name="school" id="school" >
+                                   <option selected="selected" value="0">--学校选择--</option>
+                                   {volist name="schoolinfo" id="school"}
+                                      <option  value="{$school.school}">{$school.school}</option>
+                                   {/volist}
+                                   </select>
+                                 </div>
+                                 </div>
+                               
+
+                                 
+
+
+
+        
+                                <div class="am-form-group" style="text-align: center;">
+                                
+
+                                 <button class="btn btn-info am-radius xa-sm-btn" type="submit">下一步</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+    </div>
+
+    <script  src="__INDEX__/js/distpicker.data.js"></script> 
+    <script  src="__INDEX__/js/distpicker.js"></script> 
+    <script src="__INDEX__/js/jquery.min.js"></script>
+    <script src="__INDEX__/js/amazeui.min.js"></script>
+    <script src="__INDEX__/js/app.js"></script>
+    <script src="__INDEX__/js/bootstrap.js"></script>   
+    <script src="__INDEX__/js/fileinput.js"></script>
+</body>
+
+</html>

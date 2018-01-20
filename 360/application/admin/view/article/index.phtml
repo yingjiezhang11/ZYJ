@@ -1,0 +1,88 @@
+<div class="panel">
+    <?php if($cid = input('get.cid')){
+        $wz= \app\admin\model\Column::where('id',$cid)->find();
+    }else{
+        $wz['cname']='文章管理';
+    }
+    ?>
+    <div class="panel-heading">
+        {$wz.cname}
+    </div>
+    
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="{:url('article/add')}<?php if(input('get.cid')){echo "?cid=".input('get.cid');}?>" class="btn btn-primary" target="_blank"><i class="icon icon-plus"></i> 新增文章</a>
+            </div>
+        </div>
+    </div>
+    <!--栏目-->
+    <div class="panel-body col-lg-2">
+        <div class="row">
+            <ul class="tree tree-lines tree-menu tree-chevrons" data-ride="tree">
+                <?php $column= \app\admin\model\Column::where(['pid'=>'0','type'=>'1'])->select(); ?>
+                <?php foreach ($column as $i => $c) { ?>
+                <?php $pcolumn= \app\admin\model\Column::where('pid',$c['id'])->select();if($pcolumn){ ?>
+                <li class="open"><a href="#">{$c.cname}</a>
+                    <ul>
+                        <?php foreach ($pcolumn as $i => $p) { ?>
+                        <?php $ppcolumn= \app\admin\model\Column::where('pid',$p['id'])->select();if($ppcolumn){ ?>
+                        <li class="open"><a href="#">{$p.cname}</a>
+                            <ul>
+                                <?php foreach ($ppcolumn as $i => $pp) { ?>
+                                <li class="open"><a href="{:url('article/index')}?cid={$pp.id}">{$pp.cname}</a></li>
+                                <?php } ?>
+                            </ul>
+                        <?php }else{ ?>
+                        <li class="open"><a href="{:url('article/index')}?cid={$p.id}">{$p.cname}</a>
+                        <?php } ?> 
+                        </li>
+                        <?php } ?>
+                    </ul>
+                <?php }else{ ?>
+                <li class="open"><a href="{:url('article/index')}?cid={$c.id}">{$c.cname}</a>
+                <?php } ?> 
+                </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+
+    <!--列表-->
+    <div class="table-responsive col-lg-10">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>排序</th>
+                <th>标题</th>
+                <th>栏目</th>
+                <th>添加时间</th>
+                <th>状态</th>
+                <th>前台</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $i => $row) { ?>
+                
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.listorder}</td>
+                    <td>{$row.title}<?php if($row['image']){ echo " <i class='icon icon-picture' alt='缩略图'></i>";} ?></td>
+                    <?php $column= \app\admin\model\Column::get($row['cid']); ?>
+                    <td>{$column.cname}</td>
+                    <td>{$row.addtime}</td>
+                    <td><botton class="btn btn-sm btn-def"><?php echo \my::selectText('article_status',$row['status']) ?></botton></td>
+        <td><a href="{:url('index/index/show')}?id={$row.id}" target="_blank">打开</a></td>
+                    <td>
+                        <a href="{:url('edit')}?id={$row.id}" class="btn btn-sm btn-primary">修改</a>
+                        <a href="{:url('delete')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

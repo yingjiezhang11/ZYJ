@@ -1,0 +1,55 @@
+
+<link rel="stylesheet" href="__INDEX__/jquery-treegrid/css/jquery.treegrid.css">
+
+<div class="panel">
+    <div class="panel-heading">
+        <span>库存分类列表</span>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+            <p>
+                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('admin/column/add')}"><i class="icon icon-plus"></i>新增栏目</button>
+
+            </p>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered tree">
+            <thead>
+            <tr>
+                
+                <th>分类名称</th>
+                <th>排序</th>
+                <th>类型</th>
+                <th>模型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($lists as $v) { ?>
+                <tr class="treegrid-{$v['id']} <?php echo $v['pid'] ? 'treegrid-parent-'.$v['pid'] : '' ?> ">
+                    <td>{$v['html']}{$v['cname']} <a href="#" data-toggle="modal" data-remote="{:url('admin/column/add')}?id={$v.id}"><i class="icon-plus-sign icon-1x"></i></a></td>
+                    <td>{$v['listorder']}</td>
+                    <td><?php echo \my::selectText('article_type',$v['type']) ?></td>
+                    <td><?php echo \my::selectText('article_module',$v['module']) ?></td>
+                    <td>
+                        <a href="#" data-toggle="modal" data-remote="{:url('admin/column/edit')}?id={$v.id}" class="btn btn-sm btn-primary">修改</a>
+                        <a href="{:url('admin/column/delete')}?id={$v.id}" class="btn btn-sm btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="__INDEX__/jquery-treegrid/js/jquery.treegrid.js"></script>
+<script>
+    $('.tree').treegrid({
+//        initialState:'collapsed'
+    });
+</script>

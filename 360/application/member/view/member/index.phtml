@@ -1,0 +1,62 @@
+
+<div class="panel">
+    <div class="panel-heading">
+        员工
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="{:url('edit')}" class="btn btn-primary"><i class="icon icon-plus"></i> 新增</a>
+            </div>
+            <div class="col-sm-8 mySearch">
+                <form class="form-inline" id="searchForm" action="{:request()->url()}">
+                    <div class="form-group">
+                        <label>关键字：</label>
+                        <input type="text" class="form-control" placeholder="名字" name="kw">
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+                <script>
+                    $('#searchForm').myFormData(<?= json_encode(input('get.'), JSON_UNESCAPED_UNICODE) ?>);
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>姓名(用户名)</th>
+                <th>权限</th>
+                <th>性别</th>
+                <th>图片</th>
+                <th>最后登录</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.realname}({$row.username})<?php if($row['openid']){echo " <i class='icon icon-wechat'></i>";}?></td>
+                    <td>{$row->Role->name}</td>
+                    <td><?php echo \my::selectText('gender',$row['gender']) ?></td>
+                    <td><img src="{$row.photo}" alt="" width="35" height="35"/></td>
+                    <td>{$row.lasttime}</td>
+                    <td>
+                        <a href="{:url('edit')}?id={$row.uid}" class="btn btn-sm btn-primary">修改</a>
+                        <a href="{:url('delete')}?id={$row.uid}" class="btn btn-sm btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{$list->render()}

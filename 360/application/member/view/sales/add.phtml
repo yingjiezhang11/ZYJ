@@ -1,0 +1,262 @@
+<link rel="stylesheet" href="__INDEX__/layui/css/layui.css"  media="all">
+<div class="panel">
+    <div class="panel-heading">
+        销售订单
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-horizontal" action="{:request()->url()}" method="post" id="editForm">
+                    <div class="form-group">
+                        <label class="pull-left text-left" style="margin-left: 10px">客户:</label>
+                        <div class="pull-left col-sm-2">
+                            <select name="cid" style="width:100%" class="mySelect">
+                                <option value=""></option>
+                                <?= \app\member\model\Customer::option()?>
+                            </select>
+                        </div>
+                        <label for="title" class="col-sm-2">单据编号</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="title" placeholder="" name="order_sn">
+                        </div>
+                        <label for="title" class="col-sm-2">业务员</label>
+                        <div class="col-sm-2">
+                            <select name="sales" style="width:100%" class="mySelect">
+                                <option value=""></option>
+                                <?= \app\member\model\Member::option()?>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="table  table-bordered parent">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th style="width:12%;">新增</th>
+                                <th style="width:40%">商品</th>
+                                <th style="width:6%">单位</th>
+                                <th style="width:6%">数量</th>
+                                <th style="width:6%">单价</th>
+                                <th style="width:6%">折扣率(%)</th>
+                                <th style="width:6%">折扣额</th>
+                                <th style="width:6%">销售金额</th>
+                                <th style="width:15%">备注</th>
+                            </tr>
+                        </thead>
+                        <tbody class="t-body">
+                            <tr class="row" id="firstRow">
+                                <td>
+                                    <a class="btn btn-sm btn-info clone" href="javascript:;"><i class="icon icon-plus-sign"></i></a> 
+                                    <a class="btn btn-sm btn-info clone_remove" href="javascript:;"><i class="icon icon-trash"></i></a>
+                                </td>
+                                <td class="select-doc">
+                                    <select name="data_pid[]" style="border:0px;width:100%" class="mySelect select-w">
+                                        <option value=""></option>
+                                        <?= \app\member\model\StockProduct::option()?>
+                                    </select>
+                                </td>
+                                <td><input type="text" class="text-center" style="border:0px;" name="data_unit[]"> </td>
+                                <td><input type="text" class="text-center quantity calcs_input_quantity" style="border:0px;" name="data_quantity[]"> </td>
+                                <td><input type="text" class="text-right price calcs_input_price" style="border:0px;" name="data_price[]"> </td>
+                                <td><input type="text" class="text-right calcs_input_discount_rate" style="border:0px;" name="data_discount_rate[]" > </td>
+                                <td><input type="text" class="text-right discount_number calcs_input_discount" style="border:0px;" name="data_discount_money[]"> </td>
+                                <td><input type="text" class="text-right sale_money calcs_input_money" style="border:0px;" name="data_money[]"> </td>
+                                <td><input type="text" class="" style="border:0px;" name="data_remark[]" placeholder=""> </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>合计: <span class="total_calc"></span></td>
+                                <td></td>
+                                <td class="text-center" id="total_quantity"><input type="text" class="text-center" style="border:0px;" name="total_quantity"></td>
+                                <td id="totla_price"></td>
+                                <td></td>
+                                <td class="text-right" id="total_discount"><input type="text" class="text-right" style="border:0px;" name="total_discount"></td>
+                                <td class="text-right" id="total_sale"><input type="text" class="text-right" style="border:0px;" name="total_money" ></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="form-group" style="margin-top:10px;">
+                        <label for="title" class="pull-left" style="margin-left: 10px">备注</label>
+                        <div class="pull-left col-sm-6">
+                            <input type="text" class="form-control" id="title" placeholder="" name="remark">
+                        </div>
+                        <label for="title" class="col-sm-2">开单日期</label>
+                        <div class="col-sm-2">
+                            <{tmdTag:date name="billtime"}>
+                        </div>
+
+                    </div>
+                    <div class="form-group" style="margin-top:10px;">
+                        <label class="pull-left text-left" style="margin-left: 10px">付款方式:</label>
+                        <div class="pull-left">
+                            <{tmdTag:select name="payment" optname="payment" /}>
+                        </div>
+                        <label for="title" class="col-sm-1">已收款:</label>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" id="received" placeholder="" name="received">
+                        </div>
+
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ectype = $('.t-body').html();
+    $(function () {
+         $('.parent').on('change','.select-w', function () {
+            var that = $(this);
+            var id = that.val();
+            var url = "{:url('Sales/get_product')}";
+            $.post(url, {id: id}, function (ret) {
+                that.parent().next().find('input').val(ret.unit);//单位
+                that.parent().next().next().find('input').val('1');//数量
+                that.parent().next().next().next().find('input').val(ret.selling_price);//单价
+                that.parent().next().next().next().next().find('input').val('0');//折扣率
+                that.parent().next().next().next().next().next().find('input').val('0.00');//折扣额
+                that.parent().next().next().next().next().next().next().find('input').val(ret.selling_price);//总金额
+                calcs();
+            }, "json");
+        });
+        //追加行
+        $('.parent').on('click','.clone', function () {
+            $('.t-body').append(ectype);
+            pageInit();
+            calcs();
+        });
+        //删除行
+        $('.parent').on('click','.clone_remove', function () {
+            $(this).closest('tr').remove();
+            pageInit();
+            calcs();
+        });
+        //计算修改数量
+        $('.parent').on('change','.calcs_input_quantity', function () {
+            var thats = $(this);
+            //计算改行销售金额
+            var current_quantity = thats.val();//数量
+            var current_price = thats.parent().next().find('input').val();//单价
+            var current_discount_price = thats.parent().next().next().next().find('input').val();//折扣
+            //如果折扣率为0
+            if(thats.parent().next().next().find('input').val()=='0')
+            {
+                var sale_money = current_quantity * current_price  - current_discount_price;//计算新的总金额
+                thats.parent().next().next().next().next().find('input').val(sale_money.toFixed(2));//写入新的总金额
+            }else{
+                var sale_money = ( current_quantity * current_price ) * thats.parent().next().next().find('input').val() /100;//计算新的总金额
+                thats.parent().next().next().next().find('input').val(sale_money.toFixed(2));//写入新的折扣金额
+                thats.parent().next().next().next().next().find('input').val((( current_quantity * current_price ) - sale_money).toFixed(2));//写入新的总金额
+            }
+            calcs();
+        });
+        //计算修改单价
+        $('.parent').on('change','.calcs_input_price', function () {
+            var thats = $(this);
+            //计算改行销售金额
+            var current_price = thats.val();//当前单价
+            var current_quantity = thats.parent().prev().find('input').val();//当前数量
+            var current_discount = thats.parent().next().next().find('input').val();//当前折扣金额
+            //如果折扣率为0
+            if(thats.parent().next().find('input').val()=='0')
+            {
+                var sale_money = current_price * current_quantity  - current_discount;//计算新的总金额
+                thats.parent().next().next().next().find('input').val(sale_money.toFixed(2));//写入新的总金额
+            }else{
+                var sale_money = ( current_price * current_quantity ) * (100-thats.parent().next().find('input').val()) /100;//计算新的总金额
+                thats.parent().next().next().find('input').val(sale_money.toFixed(2));//写入新的折扣金额
+                thats.parent().next().next().next().find('input').val((( current_quantity * current_price ) - sale_money).toFixed(2));//写入新的总金额
+            }
+            calcs();
+        });
+        //计算修改折扣金额
+        $('.parent').on('change','.calcs_input_discount', function () {
+            var thats = $(this);
+            //计算改行销售金额
+            var current_discount_price = thats.val();//当前折扣金额
+            var sale_money =( thats.parent().prev().prev().find('input').val() * thats.parent().prev().prev().prev().find('input').val());//当前总价
+            var sale_money_new = sale_money  - current_discount_price;//计算新的总金额
+            thats.parent().next().find('input').val(sale_money_new.toFixed(2));//写入新的总金额
+            var discount_rate = 100-(current_discount_price / sale_money)*100;
+            thats.parent().prev().find('input').val(discount_rate.toFixed(2));//写入折扣率
+            calcs();
+        });
+        //计算修改折扣率
+        $('.parent').on('change','.calcs_input_discount_rate', function () {
+            var thats = $(this);
+            //计算改行销售金额
+            var current_discount_rate = thats.val();//当前折扣率
+            var sale_money = thats.parent().prev().prev().find('input').val() * thats.parent().prev().find('input').val();//当前总价
+            var sale_money_new = sale_money - (sale_money  * ((100-current_discount_rate) / 100));//计算新的总金额
+            thats.parent().next().next().find('input').val(sale_money_new.toFixed(2));//写入新的总金额
+            var discount_price = (sale_money  * ((100-current_discount_rate) / 100));
+            thats.parent().next().find('input').val(discount_price.toFixed(2));//写入折扣金额
+            calcs();
+        });
+        //计算修改总价
+        $('.parent').on('change','.calcs_input_money', function () {
+            var thats = $(this);
+            //计算改行销售金额
+            var sale_money = thats.val();//当前总价
+            var current_quantity = thats.parent().prev().prev().prev().prev().find('input').val();//当前数量
+            var current_discount = thats.parent().prev().prev().prev().find('input').val();//当前单价
+            //如果折扣率为0
+            if(thats.parent().prev().prev().find('input').val()=='0')
+            {
+                var quantity = current_quantity * current_discount  - sale_money;//计算新的折扣金额
+                thats.parent().prev().find('input').val(quantity.toFixed(2));//写入新的折扣金额
+            }else{
+                var quantity = ( current_quantity * current_discount ) - sale_money ;//计算新的折扣金额
+                var quantity_rate = sale_money / ( current_quantity * current_discount ) *100  ;//计算新的折扣率
+                if(quantity<'0'){layer.alert('折扣金额不能小于0');return;}
+                thats.parent().prev().find('input').val(quantity.toFixed(2));//写入新的折扣金额
+                thats.parent().prev().prev().find('input').val(quantity_rate);//写入新的折扣率
+            }
+            calcs();
+        });
+        
+        //添加新行
+        function calcs(){
+            //总数量
+            var calc_quantity = 0;
+            $('.quantity').each(function (i) {
+                var tmp = isNaN(parseFloat($(this).val())) ? 0 :parseFloat($(this).val());
+                calc_quantity = calc_quantity +tmp;
+            });
+            $('#total_quantity').find('input').val(calc_quantity);
+            //总金额
+            var calc_sale_money = 0;
+            $('.sale_money').each(function (i) {
+                var tmps = isNaN(parseFloat($(this).val())) ? 0 :parseFloat($(this).val());
+                calc_sale_money = calc_sale_money +tmps;
+            });
+            $('#total_sale').find('input').val(calc_sale_money.toFixed(2));
+            //总折扣额
+            var calc_discount_money = 0;
+            $('.discount_number').each(function (i) {
+                var tmpss = isNaN(parseFloat($(this).val())) ? 0 :parseFloat($(this).val());
+                calc_discount_money = calc_discount_money +tmpss;
+            });
+            $('#total_discount').find('input').val(calc_discount_money.toFixed(2));
+        }
+
+
+    })
+</script>
+<script>
+    $('#editForm').myForm();
+    
+    // <?php if ($list) { ?> //
+    var list = <?=json_encode($list, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(list);
+    // <?php } ?> //
+
+</script>
+<script>pageInit();</script>

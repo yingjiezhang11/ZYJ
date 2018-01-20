@@ -1,0 +1,28 @@
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>产品类目</th>
+                <th>产品名称</th>
+                <th>金额</th>
+                <th>数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <?php $u= \app\member\model\StockProduct::where('id',$row['pid'])->find();?>
+                    <?php $c= \app\member\model\StockSet::where('id',$u['fid'])->find();?>
+                    <td>{$c.cname}</td>
+                    <td>{$u.pname}</td>
+                    <td>￥ {$row.buying_price}</td>
+                    <td>{$row.amount}</td>
+                </tr>
+                <?php
+                }
+            ?>
+            </tbody>
+        </table>

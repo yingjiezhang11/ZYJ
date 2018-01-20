@@ -1,0 +1,76 @@
+{__NOLAYOUT__}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>用户注册-素材火CRM系统</title>
+    <link rel="stylesheet" href="__INDEX__/zui/css/zui.min.css">
+    <link rel="stylesheet" href="__INDEX__/zui/css/zui-theme-green.css">
+    <link rel="stylesheet" href="__INDEX__/my/css/common.css">
+</head>
+<body class="hl-default myLoginBg">
+<div class="container-fluid">
+    <div class="row">
+        <div class="myLogin
+         col-lg-4 col-lg-offset-4
+         col-md-4 col-md-offset-4
+         col-sm-4 col-sm-offset-4">
+            <div class="bigtitle" align="center">素材火客户管理系统</div><br>
+            <div class="panel">
+                <div class="panel-body">
+                    <form method="post" id="loginForm">
+                        <fieldset>
+                            <div class="form-group">
+                                <label>用户名：</label>
+                                <input type="text" class="form-control" placeholder="请输入用户名" name="username" id="username">
+                            </div>
+                            <div class="form-group">
+                                <label>密码：</label>
+                                <input type="password" class="form-control" placeholder="请输入密码" name="password" id="password">
+                            </div>
+                            <div class="form-group">
+                                <label>确认密码：</label>
+                                <input type="password" class="form-control" placeholder="确认密码" name="pwdconfirm" id="password">
+                            </div>
+                            <div class="form-group">
+                                <label>手机号码：</label>
+                                <input type="text" class="form-control" placeholder="请输入手机号码" name="mobile" id="username">
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="btn btn-primary btn-block">确认注册</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__INDEX__/jquery/jquery.min.js"></script>
+<script src="__INDEX__/zui/js/zui.min.js"></script>
+<script src="__INDEX__/zui/lib/datetimepicker/datetimepicker.min.js"></script>
+<script src="__INDEX__/layer/layer.js"></script>
+<script src="__INDEX__/select2/js/select2.full.min.js"></script>
+<script src="__INDEX__/my/js/common.js"></script>
+<script>
+    $(function () {
+        $('#loginForm').myForm(function (ret) {
+            var isCkd = $('#remember').prop('checked');
+            if (isCkd) {
+                // 将用户名密码保存起来
+                var erpLogin = {
+                    username: $('#username').val(),
+                    password: $('#password').val()
+                };
+                window.localStorage.setItem('erpLogin', JSON.stringify(erpLogin))
+            }
+            // 跳转
+            window.location.href = ret.url;
+        });
+
+    });
+
+</script>
+</body>
+</html>

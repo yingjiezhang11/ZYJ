@@ -1,0 +1,70 @@
+<form class="form-horizontal" method="post" id="editForm" action="{:request()->url()}">
+     <?php if ($type == '1') { ?>
+         <div class="form-group">
+             <label class="col-sm-3">供应商名称：</label>
+             <div class="col-sm-9">
+                 <input type="text" class="form-control" name="cname" placeholder="">
+             </div>
+         </div>
+         <div class="form-group">
+             <label class="col-sm-3">联系人：</label>
+             <div class="col-sm-9">
+                 <input type="text" class="form-control" name="linkman" placeholder="">
+             </div>
+         </div>
+         <div class="form-group">
+             <label class="col-sm-3">联系电话：</label>
+             <div class="col-sm-9">
+                 <input type="text" class="form-control" name="mobile" placeholder="">
+             </div>
+         </div>
+         <div class="form-group">
+             <label class="col-sm-3">联系地址：</label>
+             <div class="col-sm-9">
+                 <input type="text" class="form-control" name="address" placeholder="">
+             </div>
+         </div>
+     <?php } elseif ($type == '2') { ?>
+         <div class="form-group">
+             <label class="col-sm-3">上级分类：</label>
+             <div class="col-sm-9">
+                 <select name="pid" class="mySelect" style="width: 100%">
+                     <option value="0">顶级</option>
+                      <?= \app\member\model\StockSet::option() ?>
+                 </select>
+             </div>
+         </div>
+         <div class="form-group">
+             <label class="col-sm-3">分类名称：</label>
+             <div class="col-sm-9">
+                 <input type="text" class="form-control" name="cname" placeholder="">
+             </div>
+         </div>
+         <div class="form-group">
+             <label class="col-sm-3">排序：</label>
+             <div class="col-sm-9">
+                 <input type="text" class="form-control" name="listorder" placeholder="">
+             </div>
+         </div>
+     <?php } ?>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="hidden" class="form-control" name="id">
+            <input type="hidden" class="form-control" name="type" value="{$type}">
+            <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+    </div>
+
+</form>
+
+
+<script>
+    $('#editForm').myForm();
+
+    // <?php if ($list) { ?> //
+    var list = <?=json_encode($list, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(list);
+    // <?php } ?> //
+
+</script>
+<script>pageInit();</script>

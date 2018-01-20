@@ -1,0 +1,190 @@
+<link rel="stylesheet" href="__INDEX__/layui/css/layui.css"  media="all">
+
+<div class="panel">
+
+    <div class="panel-heading">
+
+        销售订单
+
+    </div>
+
+    <div class="panel-body">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <form class="form-horizontal" action="{:request()->url()}" method="post" id="editForm">
+
+                    <div class="form-group">
+
+                        <label class="pull-left text-left">客户:</label>
+
+                        <div class="pull-left">
+
+                            <input type="text" style="border:0px;border-bottom: 1px solid #f0f0ee" id="title" placeholder="" name="orderid">
+
+                        </div>
+
+                        <label for="title" class="col-sm-2">开单日期</label>
+
+                        <div class="col-sm-2">
+
+                            <input type="text" class="form-control" id="title" placeholder="" name="orderid">
+
+                        </div>
+
+                    </div>
+
+                    <table class="table  table-bordered parent">
+
+                        <thead>
+
+                            <tr>
+
+                                <th></th>
+
+                                <th>新增</th>
+
+                                <th style="width:40%">商品</th>
+
+                                <th style="width:6%">单位</th>
+
+                                <th style="width:6%">数量</th>
+
+                                <th style="width:6%">单价</th>
+
+                                <th style="width:6%">折扣率(%)</th>
+
+                                <th style="width:6%">折扣额</th>
+
+                                <th style="width:6%">销售金额</th>
+
+                                <th style="width:15%">备注</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody class="t-body">
+
+                            <tr class="row" id="firstRow">
+
+                                <td><a class="btn btn-sm btn-info clone" href="javascript:;">+</a></td>
+
+                                <td class="select-doc">
+
+                                    <select name="pid[]" style="border:0px;" class="mySelect select-w">
+
+                                        <option value=""></option>
+
+                                        <?= \app\member\model\StockProduct::option()?>
+
+                                    </select>
+
+                                </td>
+
+                                <td><input type="text" class="text-center" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                                <td><input type="text" class="text-center quantity" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                                <td><input type="text" class="text-right price" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                                <td><input type="text" class="text-right" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                                <td><input type="text" class="text-right discount_number" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                                <td><input type="text" class="text-right sale_money" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                                <td><input type="text" class="" style="border:0px;" name="buying_price[]" placeholder=""> </td>
+
+                            </tr>
+
+                        </tbody>
+
+                        <tfoot>
+
+                            <tr>
+
+                                <td></td>
+
+                                <td><button type="button" @click.prevent="addProjNew">添加服务项目</button></td>
+
+                                <td>合计: <span class="total_calc"></span></td>
+
+                                <td></td>
+
+                                <td class="text-center" id="total_quantity">0</td>
+
+                                <td id="totla_price"></td>
+
+                                <td></td>
+
+                                <td id="total_discount">0.00</td>
+
+                                <td id="total_sale">0.00</td>
+
+                                <td></td>
+
+                            </tr>
+
+                        </tfoot>
+
+                    </table>
+                    <div class="form-group">
+
+                        <div class="col-sm-offset-2 col-sm-10">
+
+                            <input type="hidden" name="aid" value="{$aid}"/>
+
+                            <button type="submit" class="btn btn-primary">保存</button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+    var ectype = $('.t-body').html();
+
+    $(function () {
+        $('.parent').on('change','.select-w', function () {
+            var that = $(this);
+            var id = that.val();
+            var url = "{:url('Sales/get_product')}";
+            $.post(url, {id: id}, function (ret) {
+                that.parent().next().find('input').val(ret.unit);
+                that.parent().next().next().next().find('input').val(ret.selling_price);
+                calcs();
+            }, "json");
+        });
+        
+        $('.parent').on('click','.clone', function () {
+            $('.t-body').append(ectype);
+            pageInit();
+            calcs();
+        });
+
+        function calcs(){
+            var calc_price = 0;
+            $('.price').each(function (i) {
+                var tmp = isNaN(parseFloat($(this).val())) ? 0 :parseFloat($(this).val());
+                calc_price = calc_price +tmp;
+            });
+            $('#totla_price').text(calc_price);
+        }
+
+    })
+</script>

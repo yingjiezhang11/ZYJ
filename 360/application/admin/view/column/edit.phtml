@@ -1,0 +1,78 @@
+                <form class="form-horizontal" method="post" id="editForm" action="{:request()->url()}">
+
+                    <div class="form-group">
+                        <label class="col-sm-2">栏目名称：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="cname" placeholder="栏目名称">
+                        </div>
+                        <label class="col-sm-2">英文名称：</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="cname_en" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">上级栏目：</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="pid" style="width: 100%">
+                                <option value="0">无</option>
+                                <?= \app\admin\model\Column::option_column(input('id'))?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">缩略图：</label>
+                        <div class="col-sm-10">
+                            <{tmdTag:upimg name="image"/}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">关键字：</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="keyword" placeholder="多个关键字用,隔开">
+                        </div>
+                        <label class="col-sm-2">栏目排序：</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" name="listorder" placeholder="排序">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">栏目描述：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="description" placeholder="">
+                        </div>
+                        <label class="col-sm-1">模板</label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" name="templates" placeholder="排序">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">栏目类型：</label>
+                        <div class="col-sm-4">
+                            <{tmdTag:select name="type" optname="article_type" /}>
+                        </div>
+                        <label class="col-sm-2">栏目模型：</label>
+                        <div class="col-sm-4">
+                            <{tmdTag:select name="module" optname="article_module" /}>
+                        </div>
+                    </div>
+               
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="hidden" class="form-control" name="id">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+
+                </form>
+
+<script>pageInit();</script>
+<script>
+    $('#editForm').myForm();
+    
+    // <?php if ($editData) { ?> //
+    var editData = <?=json_encode($editData, JSON_UNESCAPED_UNICODE)?>;
+    $('#editForm').myFormData(editData);
+    // <?php } ?> //
+
+</script>

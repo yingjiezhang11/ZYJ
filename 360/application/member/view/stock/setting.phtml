@@ -1,0 +1,97 @@
+
+<div class="panel col-sm-6">
+    <div class="panel-heading">
+        供应商设置
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-remote="{:url('add_set')}?type=1"><i class="icon icon-plus"></i> 添加供应商</button>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>品牌名称</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>联系地址</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($gys as $row) { ?>
+                <tr>
+                    <td>{$row.id}</td>
+                    <td>{$row.cname}</b></td>
+                    <td>{$row.linkman}</b></td>
+                    <td>{$row.mobile}</b></td>
+                    <td>{$row.address}</b></td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('edit_set')}?id={$row.id}"><i class="icon icon-edit"></i> 修改</button>
+                        <a href="{:url('delete_set')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete"><i class="icon icon-trash"></i> 删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<link rel="stylesheet" href="__INDEX__/jquery-treegrid/css/jquery.treegrid.css">
+<div class="panel col-sm-6">
+    <div class="panel-heading">
+        产品分类
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-remote="{:url('add_set')}?type=2"><i class="icon icon-plus"></i> 添加分类</button>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>顶级分类</th>
+                <th>排序</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($fenlei as $v) { ?>
+                <tr class="treegrid-{$v['id']} <?php echo $v['pid'] ? 'treegrid-parent-'.$v['pid'] : '' ?> ">
+                    <td> {$v['id']}</td>
+                    <td> {$v['cname']}</td>
+                    <td>{$v['listorder']}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('edit_set')}?id={$v.id}"><i class="icon icon-edit"></i> 修改</button>
+                        <a href="{:url('delete_set')}?id={$v.id}" class="btn btn-sm btn-primary tmdDelete"><i class="icon icon-trash"></i> 删除</a>
+                    </td>
+                </tr>
+                    <?php $ejfl= \app\member\model\StockSet::where('pid',$v['id'])->order('listorder desc')->select();foreach ($ejfl as $r) { ?>
+                    <tr class="treegrid-{$v['id']} <?php echo $v['pid'] ? 'treegrid-parent-'.$v['pid'] : '' ?> ">
+                        <td> {$r['id']}</td>
+                        <td>  ╚══ {$r['cname']}</td>
+                        <td>{$r['listorder']}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('edit_set')}?id={$r.id}"><i class="icon icon-edit"></i> 修改</button>
+                            <a href="{:url('delete_set')}?id={$r.id}" class="btn btn-sm btn-primary tmdDelete"><i class="icon icon-trash"></i> 删除</a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="__INDEX__/jquery-treegrid/js/jquery.treegrid.js"></script>
+<script>
+    $('.tree').treegrid({
+//        initialState:'collapsed'
+    });
+</script>

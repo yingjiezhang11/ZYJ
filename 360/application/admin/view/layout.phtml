@@ -1,0 +1,165 @@
+<?php
+if(!request()->isAjax()){
+?>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>UT企业信息化管理系统</title>
+    <link rel="stylesheet" href="__INDEX__/zui/css/zui.min.css">
+    <link rel="stylesheet" href="__INDEX__/zui/css/zui-theme-green.css">
+    <link rel="stylesheet" href="__INDEX__/zui/lib/datetimepicker/datetimepicker.min.css">
+    <link rel="stylesheet" href="__INDEX__/select2/css/select2.min.css">
+    <link rel="stylesheet" href="__INDEX__/pure/grids-responsive-min.css">
+    <link rel="stylesheet" href="__INDEX__/my/css/common.css?v=4">
+
+    <script src="__INDEX__/jquery/jquery.min.js"></script>
+    <script src="__INDEX__/zui/js/zui.min.js"></script>
+    <script src="__INDEX__/zui/lib/datetimepicker/datetimepicker.min.js"></script>
+    <script src="__INDEX__/layer/layer.js"></script>
+    <script src="__INDEX__/select2/js/select2.full.min.js"></script>
+    <script src="__INDEX__/select2/js/i18n/zh-CN.js"></script>
+    <script src="__INDEX__/my/js/common.js?v=1"></script>
+    <script src="__INDEX__/echart/echarts.common.min.js"></script>
+
+</head>
+<body class="hl-default">
+<div class="container-fluid">
+    <div class="row navbar-fixed-top">
+        <nav class="navbar navbar-inverse myHead">
+            <div class="container-fluid">
+                <!-- 导航头部 -->
+                <div class="navbar-header">
+                    <!-- 品牌名称或logo -->
+                    <a class="navbar-brand" href="{:url('index/index')}"><img src="__INDEX__/my/img/logo2.png" alt="云托管"></a>
+                    <div class="myBrand">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li<?php $request = \think\Request::instance();if($request->module()=='admin'){ echo ' class="active"';}?>>
+                                <a href="{:url('admin/index/index')}">
+                                    <i class="icon icon-home"></i>
+                                    系统管理
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 导航项目 -->
+                <div class="collapse navbar-collapse">
+                    <!-- 一般导航项目 -->
+                    <ul class="nav navbar-nav navbar-right myTop">
+                        
+                        <li>
+                            <a href="javascript:window.location.reload();">
+                                <i class="icon icon-refresh"></i>
+                                刷新
+                            </a>
+                        </li>
+                        <!-- 导航中的下拉菜单 -->
+                        <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon icon-user"></i>
+                                <?= \app\admin\model\User::login('username') ?>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{:url('user/password')}"><i class="icon icon-key"></i> 修改密码</a></li>
+                                <li><a href="{:url('login/logout')}"><i class="icon icon-signout"></i> 退出系统</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- END .navbar-collapse -->
+            </div>
+        </nav>
+    </div>
+    <div  style="margin-top:58px;"></div>
+
+    <div class="row">
+        <div class="col-sm-2 hidden-xs myNav">
+            <nav class="menu" data-toggle="menu">
+                <ul class="nav nav-primary">
+                    <?php
+                    $menu_data = config('menu_data');
+                    
+                    $baseUrl = request()->baseUrl();
+                    foreach ($menu_data as $k1 => $r1) {
+                        if (!\app\admin\model\User::authCheck($k1)) {
+                            continue;
+                        }
+
+                        if ($taocan_data and !in_array($k1, $taocan_data)) {
+                            continue;
+                        }
+
+                        if (empty($r1['children'])) {
+                            $tmpAdd = empty($r1['new']) ? '' : 'target="_blank"';
+                            ?>
+                            <li <?= $r1['link']==$baseUrl ? 'class="active"' : '' ?>>
+                                <a href="{$r1['link']}" {$tmpAdd}>
+                                    <i class="icon icon-{$r1['icon']}"></i> {$r1['text']}
+                                </a>
+                            </li>
+                            <?php
+                        }else{
+                            ?>
+                            <li class="nav-parent">
+                                <a href="{$r1['link']}">
+                                    <i class="icon icon-{$r1['icon']}"></i> {$r1['text']}
+                                </a>
+                                <ul class="nav">
+                                    <?php
+                                    foreach ($r1['children'] as $k2 => $r2) {
+                                        $k2 = "$k1-$k2";
+                                        if (!\app\admin\model\User::authCheck($k2)) {
+                                            continue;
+                                        }
+
+                                        if ($taocan_data and !in_array($k2, $taocan_data)) {
+                                            continue;
+                                        }
+
+
+                                        $tmpAdd = empty($r2['new']) ? '' : 'target="_blank"';
+                                        ?>
+                                        <li <?= $r2['link']==$baseUrl ? 'class="active"' : '' ?>>
+                                            <a href="{$r2['link']}" {$tmpAdd}>
+                                                <i class="icon icon-{$r2['icon']}"></i> {$r2['text']}
+                                            </a>
+                                        </li>
+                                        <?php
+                                    }
+                                    ?>
+                                </ul>
+                            </li>
+                            <?php
+                        }
+                    }
+                    ?>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-sm-10 myMain">
+            <?php } ?>
+{__CONTENT__}
+            <?php
+            if(!request()->isAjax()){
+            ?>
+        </div><!-- end myMain -->
+    </div><!-- end row 2 -->
+
+
+        <div class="row">
+            <div class="myFoot">
+                © 2017 福建云青青网络科技有限公司 HQCMS V1.0
+
+            </div>
+        </div>
+
+</div><!-- end container-fluid -->
+
+</body>
+</html>
+            <?php } ?>

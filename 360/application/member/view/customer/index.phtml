@@ -1,0 +1,97 @@
+<div class="panel">
+    <div class="panel-heading">
+        客户基本资料
+    </div>
+    
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-remote="{:url('customer/add')}"><i class="icon icon-plus"></i> 添加客户</button>
+            </div>
+            <?php if (!(request()->isMobile())) {?>
+            <div class="col-sm-11 mySearch">
+                <form class="form-inline" id="searchForm" action="{:request()->url()}">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="客户名称" name="company">
+                        <input type="text" class="form-control" placeholder="电话号码" name="mobile">
+                        <label>客户类型：</label>
+                        <{tmdTag:select name="type" optname="customer_type" /}>
+                        <label>客户状态：</label>
+                        <{tmdTag:select name="status" optname="customer_status" /}>
+                        <label>业务员：</label>
+                        <select name="sales" class="mySelect">
+                            <option value=""></option>
+                            <?=\app\member\model\Member::option()?>
+                        </select>
+                        <label>客服：</label>
+                        <select name="service" class="mySelect">
+                            <option value=""></option>
+                            <?=\app\member\model\Member::option()?>
+                        </select>
+                        <!--label>排序：</label>
+                        <select name="sort" class="form-control">
+                            <option value="1">最后跟踪时间</option>
+                            <option value="2">录入时间</option>
+                            <option value="3">客户状态 升序</option>
+                            <option value="4">客户状态 降序</option>
+                        </select-->
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+                <script>
+                    $('#searchForm').myFormData(<?= json_encode(input('get.'), JSON_UNESCAPED_UNICODE) ?>);
+                </script>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+    <!--列表-->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>名称</th>
+                <th>电话</th>
+                <th>区域</th>
+                <th>类型</th>
+                <th>状态</th>
+                <th>时间</th>
+                <th style="width:100px">对接人员</th>
+                <th style="width:400px">最后跟踪</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($list as $i => $row) { ?>
+                
+                <tr>
+                    <td>{$row.id}</td>
+                    <td>{$row.company}</b></td>
+                    <td><a href="tel:{$row.mobile}" class="btn btn-default"><b>{$row.mobile}</b></a></td>
+                    <td>{$row.province}-{$row.city}</td>
+                    <td><?php echo \my::selectText('customer_type',$row['type']) ?></td>
+                    <td><?php echo \my::selectText('customer_status',$row['status']) ?></td>
+                    <td>{$row.addtime}</td>
+                    <td>
+                        <?php $u= \app\member\model\Member::where('uid',$row['userid'])->find();?>
+                        录入:<a class="btn btn-mini <?php if($row['userid']==U_ID){echo "btn-danger";}else{echo "btn-info";}?>">{$u.realname}</a><br>
+                        <?php $u= \app\member\model\Member::where('uid',$row['sales'])->find();?>
+                        业务:<a class="btn btn-mini <?php if($row['sales']==U_ID){echo "btn-danger";}else{echo "btn-info";}?>">{$u.realname}</a><br>
+                        <?php $u= \app\member\model\Member::where('uid',$row['service'])->find();?>
+                        客服:<a class="btn btn-mini <?php if($row['service']==U_ID){echo "btn-danger";}else{echo "btn-info";}?>">{$u.realname}</a>
+                    </td>
+                    <?php $track= \app\member\model\CustomerTrack::where('cid',$row['id'])->order('id desc')->find();?>
+                    <td>({$track.addtime})<?php echo mb_substr($track['remark'],'0','50','utf-8'); ?>...</td>
+                    <td>
+                        <a href="{:url('track')}?id={$row.id}" class="btn btn-sm btn-primary"><i class="icon icon-columns"></i> 跟踪记录</a>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('edit')}?id={$row.id}"><i class="icon icon-edit"></i> 修改</button>
+                        <a href="{:url('delete')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete"><i class="icon icon-trash"></i> 删除</a>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

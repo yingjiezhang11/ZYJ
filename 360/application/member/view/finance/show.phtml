@@ -1,0 +1,43 @@
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>产品名称</th>
+                <th>数量</th>
+                <th>进货价</th>
+                <th>单价</th>
+                <th>折扣率</th>
+                <th>折扣金额</th>
+                <th>总价</th>
+                <th>备注</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <?php $u= \app\member\model\StockProduct::where('id',$row['pid'])->find();?>
+                    <td>{$u.pname}</td>
+                    <td>{$row.quantity}</td>
+                    <td><a class="btn btn-primary">{$u.buying_price}</a></td>
+                    <td><a class="btn <?php if($u['buying_price'] < $row['price']){echo "btn-primary";}else{echo "btn-danger";}?>">{$row.price}</a></td>
+                    <td>{$row.discount_rate}</td>
+                    <td>{$row.discount_money}</td>
+                    <td>{$row.money}</td>
+                    <td>{$row.remark}</td>
+                    <td>
+                        <?php if($row['status']=='1'){?>
+                        <a class="btn btn-sm btn-primary" >正常状态</a>
+                        <?php }else{?>
+                        <a class="btn btn-sm btn-danger" >已经退单</a>
+                        <?php }?>
+                    </td>
+                </tr>
+                <?php
+                }
+            ?>
+            </tbody>
+        </table>

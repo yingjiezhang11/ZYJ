@@ -1,0 +1,62 @@
+
+<div class="panel">
+    <div class="panel-heading">
+        微信用户
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>标题</th>
+                <th>头图</th>
+                <th>艺人类型</th>
+                <th>地址</th>
+                <th>活动时间</th>
+                <th>添加时间</th>
+                <th>费用</th>
+                <th>发布用户</th>
+                <th>报名情况</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($list as $i=>$row) {
+                ?>
+                <tr>
+                    <td>{$i+1}</td>
+                    <td>{$row.title}</td>
+                    <td><img src="{$row.thumb}" alt="" width="35" height="35"/></td>
+                    <td>{$row.yiren}</td>
+                    <td>{$row.address}</td>
+                    <td>开始:{$row.stime}<br>结束:{$row.etime}</td>
+                    <td>{$row.addtime}</td>
+                    <td>{$row.feiyong}</td>
+                    <?php $u= \app\weixin\model\WxUser::where('wxid',$row['wxid'])->find(); ?>
+                    <td>{$u.nickname}</td>
+                    <?php $bm=count(\app\weixin\model\XmHuodongBaoming::where('hdid',$row['id'])->order('id desc')->select()); ?>
+                    <td>
+                        <a type="button" class="btn btn-info" href="{:url('huodong_baoming')}?id={$row.id}">{$bm}</a>
+                    </td>
+                    <?php if($row['status']=='88') {?>
+                    <td><a class="btn btn-sm btn-danger">待审核</a><br><?php if($row['ismobile']=='0'){?><a class="btn btn-sm btn-danger">不显示电话</a><?php }else{?><a class="btn btn-sm btn-success">显示电话</a><?php }?></td>
+                    <?php }elseif($row['status']=='99'){?>
+                    <td><a class="btn btn-sm btn-success">审核通过</a><br><?php if($row['ismobile']=='0'){?><a class="btn btn-sm btn-danger">不显示电话</a><?php }else{?><a class="btn btn-sm btn-success">显示电话</a><?php }?></td>
+                    <?php }else{?>
+                    <td><a class="btn btn-sm btn-default">已拒绝</a><br><?php if($row['ismobile']=='0'){?><a class="btn btn-sm btn-danger">不显示电话</a><?php }else{?><a class="btn btn-sm btn-success">显示电话</a><?php }?></td>
+                    <?php }?>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-remote="{:url('huodong_edit')}?id={$row.id}">详细资料</button>
+                        <a href="{:url('huodong_delete')}?id={$row.id}" class="btn btn-sm btn-primary tmdDelete">删除</a>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{$list->render()}

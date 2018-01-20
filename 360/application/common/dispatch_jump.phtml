@@ -1,0 +1,49 @@
+{__NOLAYOUT__}<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>操作提示</title>
+    <link rel="stylesheet" href="__INDEX__/zui/css/zui.min.css">
+    <link rel="stylesheet" href="__INDEX__/my/css/common.css">
+</head>
+<body class="hl-default myLoginBg">
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">操作提示</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info with-icon">
+                    <i class="icon-info-sign"></i>
+                    <div class="content">
+                        <p><?php echo($msg) ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <?php if (!empty($url)) { ?>
+                    <a href="<?php echo($url) ?>" class="btn btn-primary">确定</a>
+                <?php } ?>
+                <a  class="btn btn-default">返回</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="__INDEX__/jquery/jquery.min.js"></script>
+<script src="__INDEX__/zui/js/zui.min.js"></script>
+<script>
+    $('#myModal').modal({
+        backdrop: false,
+        keyboard: false,
+        show: true
+//        position: 'center',
+//        moveable: true
+    });
+</script>
+</body>
+</html>

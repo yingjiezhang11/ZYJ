@@ -1,0 +1,126 @@
+
+<style>
+    #tmdMap{
+        width: 100%;
+        height: 100%;
+    }
+    #tmdMapSearch{
+        position: absolute;
+        right: 80px;
+        bottom: 12px;
+    }
+    #tmdMapSearch input{
+        height: 24px;
+        box-sizing: border-box;
+        border: 1px solid #c4c7cc;
+    }
+    #tmdMapSearch button{
+        height: 24px;
+        box-sizing: border-box;
+        border: 1px solid #c4c7cc;
+        background: #fafafa;
+        font-size: 12px;
+    }
+</style>
+<div id="tmdMap"></div>
+<div id="tmdMapSearch">
+    <input type="text" value="">
+    <button>搜索</button>
+</div>
+<script>
+    var script = document.createElement("script");
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=IgnZ4taUjaliYvT1wIFX7mi2&callback=mapMarkInit";
+    document.body.appendChild(script);
+
+    function mapMarkInit() {
+        window.map = new BMap.Map("tmdMap");            // 创建Map实例
+        map.centerAndZoom('福州', 13);
+        map.enableScrollWheelZoom();
+        map.enableKeyboard();
+        map.enableInertialDragging();
+
+
+        map.addControl(new BMap.CityListControl({
+            anchor: BMAP_ANCHOR_BOTTOM_RIGHT // BMAP_ANCHOR_TOP_LEFT
+        }));
+        map.addControl(new BMap.MapTypeControl({
+            anchor: BMAP_ANCHOR_TOP_RIGHT
+        }));
+        map.addControl(new BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_LEFT,
+//            offset: new BMap.Size(-10, 30),
+            enableGeolocation: true
+        }));
+        var myIcon = new BMap.Icon('http://api0.map.bdimg.com/images/marker_red_sprite.png', new BMap.Size(39,25));
+
+        map.addEventListener("click", function(e){
+            map.clearOverlays();
+
+            window.marker = new BMap.Marker(e.point, {
+                enableDragging: true,
+                icon: myIcon,
+                offset: new BMap.Size(9, -12)
+            });
+            marker.addEventListener('dragend', mapMarkReturn);
+            map.addOverlay(marker);
+
+            mapMarkReturn();
+        });
+
+        // 有默认值
+        if (window.mapMarkInputJ.value && window.mapMarkInputW.value) {
+            var point = new BMap.Point(window.mapMarkInputJ.value, window.mapMarkInputW.value);
+            window.marker = new BMap.Marker(point, {
+                enableDragging: true,
+                icon: myIcon,
+                offset: new BMap.Size(9, -12)
+            });
+            marker.addEventListener('dragend', mapMarkReturn);
+            map.addOverlay(marker);
+
+            map.addEventListener("load", function(e){
+                map.panTo(point);
+            });
+        }
+
+        // 点击搜索时
+        $('#tmdMapSearch button').on('click', function (e) {
+            e.preventDefault();
+            var addr = $('#tmdMapSearch input').val();
+            if (!addr) {
+                layer.alert('请先输入地址');
+                return;
+            }
+            var myGeo = new BMap.Geocoder();
+
+            myGeo.getLocation(map.getCenter(), function (loc) {
+                var city = loc.addressComponents.city; // 获取当前城市
+
+                myGeo.getPoint(addr, function(point){
+                    if (point) {
+                        window.marker = new BMap.Marker(point, {
+                            enableDragging: true,
+                            icon: myIcon,
+                            offset: new BMap.Size(9, -12)
+                        });
+                        marker.addEventListener('dragend', mapMarkReturn);
+                        map.addOverlay(marker);
+                        mapMarkReturn();
+                        map.centerAndZoom(point, 19);
+                    }else{
+                        layer.alert("找不到您输入的地址");
+                    }
+                }, city);
+            });
+
+        });
+    }
+
+    function mapMarkReturn() {
+        var point = window.marker.getPosition();
+        window.mapMarkInputJ.value = point.lng;
+        window.mapMarkInputW.value = point.lat;
+    }
+
+</script>
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=IgnZ4taUjaliYvT1wIFX7mi2"></script>-->
